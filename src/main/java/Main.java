@@ -57,6 +57,10 @@ public class Main {
             JMenuItem copyButton = new JMenuItem("Copy");
             JMenuItem pasteButton = new JMenuItem("Paste");
 
+            cutButton.setAccelerator(KeyStroke.getKeyStroke('X', InputEvent.CTRL_DOWN_MASK));
+            copyButton.setAccelerator(KeyStroke.getKeyStroke('C', InputEvent.CTRL_DOWN_MASK));
+            pasteButton.setAccelerator(KeyStroke.getKeyStroke('V', InputEvent.CTRL_DOWN_MASK));
+
             fileMenu.add(openButton);
             fileMenu.add(new JSeparator());
             fileMenu.add(saveButton);
