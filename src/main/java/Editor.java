@@ -1,14 +1,16 @@
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
 import java.awt.*;
 import java.io.*;
 import java.util.StringTokenizer;
 
 class Editor extends JPanel {
-    private JTextPane textPane;
-
     final static String FILE_EXTENSION = ".std";
+    private JTextPane textPane;
 
     Editor() {
         super();
@@ -22,7 +24,6 @@ class Editor extends JPanel {
         var scrollPane = new JScrollPane(noWrapPanel);
         textPane.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, Color.BLACK, Color.GRAY));
 
-        System.out.println(textPane.getStyledDocument().getClass().getCanonicalName());
         // add the scrollPane
         setLayout(new GridLayout(1, 1));
         add(scrollPane);
@@ -55,7 +56,6 @@ class Editor extends JPanel {
         }
     }
 
-
     /**
      * Opens a supported Styled Document Format file
      *
@@ -67,14 +67,96 @@ class Editor extends JPanel {
             int response = JOptionPane.showOptionDialog(getTopLevelAncestor(), "You have data in you editor. " +
                             "You will lose it when you load a new file. Do you want to continue?", "Warning",
                     JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, JOptionPane.NO_OPTION);
-            if (response == JOptionPane.YES_OPTION) {
-                try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
-                    var document = (DefaultStyledDocument) ois.readObject();
-                    textPane.setStyledDocument(document);
-                } catch (ClassNotFoundException | IOException e) {
-                    throw new IOException("Unsupported file format!");
-                }
+            if (response == JOptionPane.NO_OPTION) {
+                return;
             }
         }
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+            var document = (DefaultStyledDocument) ois.readObject();
+            textPane.setStyledDocument(document);
+        } catch (ClassNotFoundException | IOException e) {
+            throw new IOException("Unsupported file format!");
+        }
+    }
+
+    /**
+     * Toggles the BOLD attribute on the selected text
+     */
+    void toggleBoldOnSelection() {
+        Style bold = textPane.addStyle("bold", null);
+        StyleConstants.setBold(bold, !isSelectionBold());
+        addAttribute(bold);
+    }
+
+    /**
+     * Checks if the selected text is bold
+     *
+     * @return true if every character in the selection is bold. Otherwise false.
+     */
+    boolean isSelectionBold() {
+        var selectionStart = textPane.getSelectionStart();
+        var selectionEnd = textPane.getSelectionEnd();
+        var document = textPane.getStyledDocument();
+
+        boolean isBold = selectionStart != selectionEnd;
+        for (int i = selectionStart; i < selectionEnd; i++) {
+            var element = document.getCharacterElement(i);
+            if (!StyleConstants.isBold(element.getAttributes())) {
+                isBold = false;
+                break;
+            }
+        }
+        return isBold;
+    }
+
+    /**
+     * Toggles ITALIC on selected text
+     */
+    void toggleItalicsOnSelection() {
+        Style italic = textPane.addStyle("italic", null);
+        StyleConstants.setItalic(italic, !isSelectionItalic());
+        addAttribute(italic);
+    }
+
+    /**
+     * Utility function to add a style to the selected text
+     *
+     * @param style the style to be added
+     */
+    private void addAttribute(Style style) {
+        var selectionStart = textPane.getSelectionStart();
+        var selectionEnd = textPane.getSelectionEnd();
+        var selectionLength = selectionEnd - selectionStart;
+        var document = textPane.getStyledDocument();
+        try {
+            var selection = document.getText(selectionStart, selectionLength);
+            document.remove(selectionStart, selectionLength);
+            // TODO: 11/4/2018 use SimpleAttributeSet to have multiple properties.
+//            MutableAttributeSet mas = new SimpleAttributeSet(document.getCharacterElement(1).getAttributes());
+            document.insertString(selectionStart, selection, style);
+        } catch (BadLocationException e) {
+            e.printStackTrace(); // should never happen
+        }
+    }
+
+    /**
+     * Checks if the selected text is italic
+     *
+     * @return true if every character in the selection is italic. Otherwise false.
+     */
+    boolean isSelectionItalic() {
+        var selectionStart = textPane.getSelectionStart();
+        var selectionEnd = textPane.getSelectionEnd();
+        var document = textPane.getStyledDocument();
+
+        boolean isItalics = selectionStart != selectionEnd;
+        for (int i = selectionStart; i < selectionEnd; i++) {
+            var element = document.getCharacterElement(i);
+            if (!StyleConstants.isItalic(element.getAttributes())) {
+                isItalics = false;
+                break;
+            }
+        }
+        return isItalics;
     }
 }

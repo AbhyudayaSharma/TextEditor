@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.InputEvent;
@@ -11,11 +13,12 @@ public class Main {
             final var frame = new JFrame("TextEditor");
             final var editor = new Editor();
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            frame.setLayout(new GridBagLayout())
-            ;
+            frame.setLayout(new GridBagLayout());
+
             JMenuBar menuBar = new JMenuBar();
             JMenu fileMenu = new JMenu("File");
             JMenu editMenu = new JMenu("Edit");
+            JMenu formatMenu = new JMenu("Format");
 
             JMenuItem saveButton = new JMenuItem("Save...");
             saveButton.setAccelerator(KeyStroke.getKeyStroke('S', InputEvent.CTRL_DOWN_MASK));
@@ -57,6 +60,9 @@ public class Main {
             JMenuItem copyButton = new JMenuItem("Copy");
             JMenuItem pasteButton = new JMenuItem("Paste");
 
+            JCheckBoxMenuItem boldButton = new JCheckBoxMenuItem("Bold");
+            JCheckBoxMenuItem italicButton = new JCheckBoxMenuItem("Italics");
+
             cutButton.setAccelerator(KeyStroke.getKeyStroke('X', InputEvent.CTRL_DOWN_MASK));
             copyButton.setAccelerator(KeyStroke.getKeyStroke('C', InputEvent.CTRL_DOWN_MASK));
             pasteButton.setAccelerator(KeyStroke.getKeyStroke('V', InputEvent.CTRL_DOWN_MASK));
@@ -69,8 +75,31 @@ public class Main {
             editMenu.add(copyButton);
             editMenu.add(pasteButton);
 
+            formatMenu.add(boldButton);
+            formatMenu.add(italicButton);
+
+            formatMenu.addMenuListener(new MenuListener() {
+                @Override
+                public void menuSelected(MenuEvent e) {
+                    boldButton.setState(editor.isSelectionBold());
+                    italicButton.setState(editor.isSelectionItalic());
+                }
+
+                @Override
+                public void menuDeselected(MenuEvent e) {
+                }
+
+                @Override
+                public void menuCanceled(MenuEvent e) {
+                }
+            });
+
+            boldButton.addActionListener(e -> editor.toggleBoldOnSelection());
+            italicButton.addActionListener(e -> editor.toggleItalicsOnSelection());
+
             menuBar.add(fileMenu);
             menuBar.add(editMenu);
+            menuBar.add(formatMenu);
             frame.setJMenuBar(menuBar);
 
             GridBagConstraints gbc = new GridBagConstraints();

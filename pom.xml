@@ -13,4 +13,10 @@
         <maven.compiler.target>1.10</maven.compiler.target>
     </properties>
 
+    <contributors>
+        <contributor>
+            <name>Abhyudaya Sharma</name>
+            <email>as388@snu.edu.in</email>
+        </contributor>
+    </contributors>
 </project>
