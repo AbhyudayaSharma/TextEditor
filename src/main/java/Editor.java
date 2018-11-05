@@ -1,7 +1,7 @@
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
-import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import java.awt.*;
@@ -126,16 +126,13 @@ class Editor extends JPanel {
     private void addAttribute(Style style) {
         var selectionStart = textPane.getSelectionStart();
         var selectionEnd = textPane.getSelectionEnd();
-        var selectionLength = selectionEnd - selectionStart;
         var document = textPane.getStyledDocument();
-        try {
-            var selection = document.getText(selectionStart, selectionLength);
-            document.remove(selectionStart, selectionLength);
-            // TODO: 11/4/2018 use SimpleAttributeSet to have multiple properties.
-//            MutableAttributeSet mas = new SimpleAttributeSet(document.getCharacterElement(1).getAttributes());
-            document.insertString(selectionStart, selection, style);
-        } catch (BadLocationException e) {
-            e.printStackTrace(); // should never happen
+        for (var i = selectionStart; i < selectionEnd; i++) {
+            var oldAttributes = document.getCharacterElement(i).getAttributes();
+            var newAttributes = new SimpleAttributeSet(oldAttributes);
+            newAttributes.removeAttribute(style.getName()); // remove if it already exists
+            newAttributes.addAttributes(style);
+            document.setCharacterAttributes(i, 1, newAttributes, true);
         }
     }
 

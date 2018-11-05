@@ -62,6 +62,7 @@ public class Main {
 
             JCheckBoxMenuItem boldButton = new JCheckBoxMenuItem("Bold");
             JCheckBoxMenuItem italicButton = new JCheckBoxMenuItem("Italics");
+            JMenuItem fontButton = new JMenuItem("Font...");
 
             cutButton.setAccelerator(KeyStroke.getKeyStroke('X', InputEvent.CTRL_DOWN_MASK));
             copyButton.setAccelerator(KeyStroke.getKeyStroke('C', InputEvent.CTRL_DOWN_MASK));
@@ -77,6 +78,8 @@ public class Main {
 
             formatMenu.add(boldButton);
             formatMenu.add(italicButton);
+            formatMenu.add(new JSeparator());
+            formatMenu.add(fontButton);
 
             formatMenu.addMenuListener(new MenuListener() {
                 @Override
