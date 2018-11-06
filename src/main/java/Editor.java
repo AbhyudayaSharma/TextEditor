@@ -1,5 +1,4 @@
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.Style;
@@ -10,19 +9,17 @@ import java.util.StringTokenizer;
 
 class Editor extends JPanel {
     final static String FILE_EXTENSION = ".std";
-    private JTextPane textPane;
+    private final StylizedTextPane textPane;
 
     Editor() {
         super();
-        textPane = new JTextPane();
-        textPane.setText("");
+        textPane = new StylizedTextPane();
 
         // no soft-wraps
         var noWrapPanel = new JPanel(new BorderLayout());
         noWrapPanel.add(textPane);
         // scrollable interface
         var scrollPane = new JScrollPane(noWrapPanel);
-        textPane.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, Color.BLACK, Color.GRAY));
 
         // add the scrollPane
         setLayout(new GridLayout(1, 1));
@@ -155,5 +152,27 @@ class Editor extends JPanel {
             }
         }
         return isItalics;
+    }
+
+
+    /**
+     * Wrapper for cut
+     */
+    void cut() {
+        textPane.cut();
+    }
+
+    /**
+     * Wrapper for copy
+     */
+    void copy() {
+        textPane.copy();
+    }
+
+    /**
+     * Wrapper for paste
+     */
+    void paste() {
+        textPane.paste();
     }
 }

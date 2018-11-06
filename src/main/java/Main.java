@@ -68,6 +68,10 @@ public class Main {
             copyButton.setAccelerator(KeyStroke.getKeyStroke('C', InputEvent.CTRL_DOWN_MASK));
             pasteButton.setAccelerator(KeyStroke.getKeyStroke('V', InputEvent.CTRL_DOWN_MASK));
 
+            cutButton.addActionListener(e -> editor.cut());
+            copyButton.addActionListener(e -> editor.copy());
+            pasteButton.addActionListener(e -> editor.paste());
+
             fileMenu.add(openButton);
             fileMenu.add(new JSeparator());
             fileMenu.add(saveButton);
