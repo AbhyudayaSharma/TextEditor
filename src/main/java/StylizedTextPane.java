@@ -3,6 +3,9 @@ import javax.swing.border.BevelBorder;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 class StylizedTextPane extends JTextPane {
@@ -29,14 +32,28 @@ class StylizedTextPane extends JTextPane {
         var selectionStart = getSelectionStart();
         var selectionEnd = getSelectionEnd();
         var selectionLength = selectionEnd - selectionStart;
+        var systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        var sysClipboardData = "";
+
+        try {
+            sysClipboardData = systemClipboard.getData(DataFlavor.stringFlavor).toString();
+        } catch (UnsupportedFlavorException | IOException e) {
+            e.printStackTrace();
+        }
+
+        var string = clipboard.getContentsAsString();
+
         try {
             document.remove(selectionStart, selectionLength);
             var newChars = clipboard.getContents();
-            var string = clipboard.getContentsAsString();
-            document.insertString(selectionStart, string, null);
-            for (int i = 0; i < string.length(); i++) {
-                document.setCharacterAttributes(i + selectionStart, 1,
-                        newChars.get(i).attributes, true);
+            if (sysClipboardData.equals(string) && !string.isEmpty()) {
+                document.insertString(selectionStart, string, null);
+                for (int i = 0; i < string.length(); i++) {
+                    document.setCharacterAttributes(i + selectionStart, 1,
+                            newChars.get(i).attributes, true);
+                }
+            } else if (!sysClipboardData.isEmpty()) {
+                document.insertString(selectionStart, sysClipboardData, null);
             }
         } catch (BadLocationException ignore) {
         }
@@ -60,4 +77,3 @@ class StylizedTextPane extends JTextPane {
         return list;
     }
 }
-
