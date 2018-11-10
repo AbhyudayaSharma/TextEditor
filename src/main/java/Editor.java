@@ -202,6 +202,7 @@ class Editor extends JPanel {
      * Finds text in the textPane
      *
      * @param str the string to be found
+     * @param caseSensitive find text ignoring case if false
      */
     private boolean findText(String str, boolean caseSensitive) {
         var data = textPane.getText();
@@ -225,9 +226,10 @@ class Editor extends JPanel {
     /**
      * Replaces the text in the panel while respecting the initial formatting
      *
-     * @param from       the text to be replaced
-     * @param to         the replaced text
-     * @param replaceAll whether to replace all occurrences or just the first
+     * @param from          the text to be replaced
+     * @param to            the replaced text
+     * @param caseSensitive replace text ignoring case if false
+     * @param replaceAll    whether to replace all occurrences or just the first
      * @return true if replaced successfully, false if unable to replace
      */
     private boolean replaceText(String from, String to, boolean caseSensitive, boolean replaceAll) {
@@ -240,6 +242,14 @@ class Editor extends JPanel {
         return replaced;
     }
 
+    /**
+     * Replaces the first occurrence of the text 'from' to the text 'to'
+     *
+     * @param from          the text to be replaced
+     * @param to            the replaced text
+     * @param caseSensitive replace text ignoring case if false
+     * @return true if able to replace, false otherwise.
+     */
     private boolean replaceText(String from, String to, boolean caseSensitive) {
         var data = textPane.getText();
 
