@@ -5,10 +5,12 @@ import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.InputEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 
-public class Main {
+class Main {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             // Native look and feel
@@ -20,8 +22,17 @@ public class Main {
 
             final var frame = new JFrame("TextEditor");
             final var editor = new Editor();
-            frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
             frame.setLayout(new GridBagLayout());
+
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    if (editor.confirmClose()) {
+                        System.exit(0);
+                    }
+                }
+            });
 
             JMenuBar menuBar = new JMenuBar();
             JMenu fileMenu = new JMenu("File");
@@ -129,6 +140,21 @@ public class Main {
             JPanel statusBar = new JPanel(new FlowLayout(FlowLayout.RIGHT));
             JLabel wordCountLabel = new JLabel("0 words");
             JLabel charCountLabel = new JLabel("0 characters");
+            ButtonGroup modeGroup = new ButtonGroup();
+            JRadioButton editorRadio = new JRadioButton("Editor", true);
+            JRadioButton shapesRadio = new JRadioButton("Shapes");
+            modeGroup.add(editorRadio);
+            modeGroup.add(shapesRadio);
+
+            shapesRadio.addActionListener(e -> {
+                JOptionPane.showMessageDialog(frame, new DrawingPanel(), "Drawing Mode", JOptionPane.PLAIN_MESSAGE);
+                editorRadio.setSelected(true);
+            });
+
+            statusBar.add(new JSeparator(SwingConstants.VERTICAL));
+            statusBar.add(new JLabel("Mode: "));
+            statusBar.add(editorRadio);
+            statusBar.add(shapesRadio);
             statusBar.add(new JSeparator(SwingConstants.VERTICAL));
             statusBar.add(wordCountLabel);
             statusBar.add(new JSeparator(SwingConstants.VERTICAL));

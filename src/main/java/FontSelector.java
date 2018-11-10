@@ -1,2 +1,2 @@
-public class FontSelector {
+class FontSelector {
 }

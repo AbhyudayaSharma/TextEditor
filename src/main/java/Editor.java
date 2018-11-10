@@ -358,4 +358,16 @@ class Editor extends JPanel {
             }
         }
     }
+
+    /**
+     * Utility for closing the editor while warning about
+     * unsaved changes.
+     *
+     * @return true if ready to quit, false otherwise.
+     */
+    boolean confirmClose() {
+        var output = JOptionPane.showConfirmDialog(getTopLevelAncestor(), "Do you want to exit? You may have unsaved changes.",
+                "Confirm exit", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        return output == JOptionPane.YES_OPTION;
+    }
 }
