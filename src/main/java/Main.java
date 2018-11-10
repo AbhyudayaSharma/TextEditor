@@ -59,6 +59,7 @@ public class Main {
             JMenuItem cutButton = new JMenuItem("Cut");
             JMenuItem copyButton = new JMenuItem("Copy");
             JMenuItem pasteButton = new JMenuItem("Paste");
+            JMenuItem findButton = new JMenuItem("Find...");
 
             JCheckBoxMenuItem boldButton = new JCheckBoxMenuItem("Bold");
             JCheckBoxMenuItem italicButton = new JCheckBoxMenuItem("Italics");
@@ -67,10 +68,12 @@ public class Main {
             cutButton.setAccelerator(KeyStroke.getKeyStroke('X', InputEvent.CTRL_DOWN_MASK));
             copyButton.setAccelerator(KeyStroke.getKeyStroke('C', InputEvent.CTRL_DOWN_MASK));
             pasteButton.setAccelerator(KeyStroke.getKeyStroke('V', InputEvent.CTRL_DOWN_MASK));
+            findButton.setAccelerator(KeyStroke.getKeyStroke('F', InputEvent.CTRL_DOWN_MASK));
 
             cutButton.addActionListener(e -> editor.cut());
             copyButton.addActionListener(e -> editor.copy());
             pasteButton.addActionListener(e -> editor.paste());
+            findButton.addActionListener(e -> editor.findText());
 
             fileMenu.add(openButton);
             fileMenu.add(new JSeparator());
@@ -79,6 +82,8 @@ public class Main {
             editMenu.add(cutButton);
             editMenu.add(copyButton);
             editMenu.add(pasteButton);
+            editMenu.add(new JSeparator());
+            editMenu.add(findButton);
 
             formatMenu.add(boldButton);
             formatMenu.add(italicButton);

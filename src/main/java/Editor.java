@@ -175,4 +175,35 @@ class Editor extends JPanel {
     void paste() {
         textPane.paste();
     }
+
+    /**
+     * Finds text in the textPane with a dialog for input
+     */
+    void findText() {
+        var input = (String) JOptionPane.showInputDialog(getTopLevelAncestor(), "Please enter the text to find:",
+                "Find Text", JOptionPane.QUESTION_MESSAGE);
+        if (input != null) {
+            if (!findText(input)) {
+                JOptionPane.showMessageDialog(getTopLevelAncestor(), "Given text was not found in the editor.",
+                        "Text not found", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }
+
+    /**
+     * Finds text in the textPane
+     *
+     * @param str the string to be found
+     */
+    private boolean findText(String str) {
+        var data = textPane.getText();
+        var index = data.indexOf(str);
+        if (index >= 0) {
+            textPane.setSelectionStart(index);
+            textPane.setSelectionEnd(index + str.length());
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
