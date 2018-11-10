@@ -82,7 +82,8 @@ class Main {
             JMenuItem replaceButton = new JMenuItem("Replace...");
 
             JCheckBoxMenuItem boldButton = new JCheckBoxMenuItem("Bold");
-            JCheckBoxMenuItem italicButton = new JCheckBoxMenuItem("Italics");
+            JCheckBoxMenuItem italicButton = new JCheckBoxMenuItem("Italic");
+            JCheckBoxMenuItem underlineButton = new JCheckBoxMenuItem("Underline");
             JMenuItem fontButton = new JMenuItem("Font...");
 
             cutButton.setAccelerator(KeyStroke.getKeyStroke('X', InputEvent.CTRL_DOWN_MASK));
@@ -110,6 +111,7 @@ class Main {
 
             formatMenu.add(boldButton);
             formatMenu.add(italicButton);
+            formatMenu.add(underlineButton);
             formatMenu.add(new JSeparator());
             formatMenu.add(fontButton);
 
@@ -118,6 +120,7 @@ class Main {
                 public void menuSelected(MenuEvent e) {
                     boldButton.setState(editor.isSelectionBold());
                     italicButton.setState(editor.isSelectionItalic());
+                    underlineButton.setState(editor.isSelectionUnderline());
                 }
 
                 @Override
@@ -131,6 +134,11 @@ class Main {
 
             boldButton.addActionListener(e -> editor.toggleBoldOnSelection());
             italicButton.addActionListener(e -> editor.toggleItalicsOnSelection());
+            underlineButton.addActionListener(e -> editor.toggleUnderlineOnSelection());
+
+            boldButton.setAccelerator(KeyStroke.getKeyStroke('B', InputEvent.CTRL_DOWN_MASK));
+            italicButton.setAccelerator(KeyStroke.getKeyStroke('I', InputEvent.CTRL_DOWN_MASK));
+            underlineButton.setAccelerator(KeyStroke.getKeyStroke('U', InputEvent.CTRL_DOWN_MASK));
 
             menuBar.add(fileMenu);
             menuBar.add(editMenu);

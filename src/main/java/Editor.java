@@ -120,6 +120,15 @@ class Editor extends JPanel {
     }
 
     /**
+     * Toggles the UNDERLINE attribute on the selected text.
+     */
+    void toggleUnderlineOnSelection() {
+        Style underline = textPane.addStyle("underline", null);
+        StyleConstants.setUnderline(underline, !isSelectionUnderline());
+        addAttribute(underline);
+    }
+
+    /**
      * Checks if the selected text is bold
      *
      * @return true if every character in the selection is bold. Otherwise false.
@@ -138,6 +147,27 @@ class Editor extends JPanel {
             }
         }
         return isBold;
+    }
+
+    /**
+     * Checks if the selected text is underlined
+     *
+     * @return true if every character in the selection is underline. Otherwise false.
+     */
+    boolean isSelectionUnderline() {
+        var selectionStart = textPane.getSelectionStart();
+        var selectionEnd = textPane.getSelectionEnd();
+        var document = textPane.getStyledDocument();
+
+        boolean isUnderline = selectionStart != selectionEnd;
+        for (int i = selectionStart; i < selectionEnd; i++) {
+            var element = document.getCharacterElement(i);
+            if (!StyleConstants.isUnderline(element.getAttributes())) {
+                isUnderline = false;
+                break;
+            }
+        }
+        return isUnderline;
     }
 
     /**
