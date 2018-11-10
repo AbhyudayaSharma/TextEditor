@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -125,6 +126,39 @@ public class Main {
             menuBar.add(formatMenu);
             frame.setJMenuBar(menuBar);
 
+            JPanel statusBar = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+            JLabel wordCountLabel = new JLabel("0 words");
+            JLabel charCountLabel = new JLabel("0 characters");
+            statusBar.add(new JSeparator(SwingConstants.VERTICAL));
+            statusBar.add(wordCountLabel);
+            statusBar.add(new JSeparator(SwingConstants.VERTICAL));
+            statusBar.add(charCountLabel);
+            statusBar.add(new JSeparator(SwingConstants.VERTICAL));
+            statusBar.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED, Color.BLACK, Color.GRAY));
+
+            // update the word-count and char-count every 200ms
+            new Timer(200, e -> {
+                // wordCountLabel
+                var wordCount = editor.wordCount();
+                var selectedWordCount = editor.selectedWordCount();
+                if (selectedWordCount == 0) {
+                    wordCountLabel.setText(wordCount + (wordCount == 1 ? " word" : " words"));
+                } else {
+                    wordCountLabel.setText(selectedWordCount + " of " + wordCount +
+                            (wordCount == 1 ? " word" : " words"));
+                }
+
+                // charCountLabel
+                var charCount = editor.charCount();
+                var selectedCharCount = editor.selectedCharCount();
+                if (selectedCharCount == 0) {
+                    charCountLabel.setText(charCount + (charCount == 1 ? " character" : " characters"));
+                } else {
+                    charCountLabel.setText(selectedCharCount + " of " + charCount +
+                            (charCount == 1 ? " character" : " characters"));
+                }
+            }).start();
+
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.gridx = 0;
             gbc.gridy = 0;
@@ -136,6 +170,15 @@ public class Main {
             gbc.insets = new Insets(1, 1, 1, 1);
             frame.add(editor, gbc);
 
+            gbc.gridx = 0;
+            gbc.gridy = 1;
+            gbc.weightx = 1;
+            gbc.weighty = 0;
+            gbc.fill = 1;
+            gbc.insets = new Insets(1, 1, 1, 1);
+            frame.add(statusBar, gbc);
+
+            frame.setMinimumSize(new Dimension(300, 200));
             frame.setPreferredSize(new Dimension(500, 500));
             frame.pack();
             frame.setVisible(true);

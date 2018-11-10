@@ -8,6 +8,7 @@ import java.util.StringTokenizer;
 
 class Editor extends JPanel {
     final static String FILE_EXTENSION = ".std";
+    private static final String WORD_DELIMITERS = " ,.!?/\\()[]{};:";
     private final StylizedTextPane textPane;
 
     Editor() {
@@ -28,10 +29,44 @@ class Editor extends JPanel {
     /**
      * Counts the number of words in the panel
      *
-     * @return the number of words
+     * @return the total number of words
      */
     int wordCount() {
-        return new StringTokenizer(textPane.getText(), " ,.!?/\\()[]{};:").countTokens();
+        return new StringTokenizer(textPane.getText(), WORD_DELIMITERS).countTokens();
+    }
+
+    /**
+     * Counts the number of words in the selection.
+     *
+     * @return the number of words in the current selection
+     */
+    int selectedWordCount() {
+        var selectionStart = textPane.getSelectionStart();
+        var selectionEnd = textPane.getSelectionEnd();
+        return selectionStart == selectionEnd ? 0 :
+                new StringTokenizer(textPane.getText().substring(selectionStart, selectionEnd), WORD_DELIMITERS)
+                        .countTokens();
+    }
+
+    /**
+     * Counts the total number of characters in the editor
+     *
+     * @return the total number of characters
+     */
+    int charCount() {
+        return textPane.getText().length();
+    }
+
+    /**
+     * Counts the number of characters in the selection
+     *
+     * @return the number of characters in the selection
+     */
+    int selectedCharCount() {
+        var selectionStart = textPane.getSelectionStart();
+        var selectionEnd = textPane.getSelectionEnd();
+
+        return selectionEnd == selectionStart ? 0 : textPane.getText().substring(selectionStart, selectionEnd).length();
     }
 
     /**
@@ -201,7 +236,7 @@ class Editor extends JPanel {
     /**
      * Finds text in the textPane
      *
-     * @param str the string to be found
+     * @param str           the string to be found
      * @param caseSensitive find text ignoring case if false
      */
     private boolean findText(String str, boolean caseSensitive) {
