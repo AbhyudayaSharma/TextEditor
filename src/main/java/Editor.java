@@ -1,10 +1,9 @@
 import javax.swing.*;
-import javax.swing.text.DefaultStyledDocument;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
+import javax.swing.text.*;
 import java.awt.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Locale;
 import java.util.StringTokenizer;
 
 class Editor extends JPanel {
@@ -180,10 +179,19 @@ class Editor extends JPanel {
      * Finds text in the textPane with a dialog for input
      */
     void findText() {
-        var input = (String) JOptionPane.showInputDialog(getTopLevelAncestor(), "Please enter the text to find:",
-                "Find Text", JOptionPane.QUESTION_MESSAGE);
-        if (input != null) {
-            if (!findText(input)) {
+        var panel = new JPanel(new GridLayout(2, 2));
+        var textField = new JTextField(10);
+        var checkBox = new JCheckBox("Match Case", true);
+        panel.add(new JLabel("Find what:"));
+
+        panel.add(textField);
+        panel.add(checkBox);
+        textField.requestFocus();
+
+        var input = JOptionPane.showConfirmDialog(getTopLevelAncestor(), panel,
+                "Find", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (input == JOptionPane.OK_OPTION) {
+            if (!findText(textField.getText(), checkBox.isSelected())) {
                 JOptionPane.showMessageDialog(getTopLevelAncestor(), "Given text was not found in the editor.",
                         "Text not found", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -195,8 +203,15 @@ class Editor extends JPanel {
      *
      * @param str the string to be found
      */
-    private boolean findText(String str) {
+    private boolean findText(String str, boolean caseSensitive) {
         var data = textPane.getText();
+
+        // convert both to lowercase if not case-sensitive
+        if (!caseSensitive) {
+            data = data.toLowerCase(Locale.US);
+            str = str.toLowerCase(Locale.US);
+        }
+
         var index = data.indexOf(str);
         if (index >= 0) {
             textPane.setSelectionStart(index);
@@ -204,6 +219,98 @@ class Editor extends JPanel {
             return true;
         } else {
             return false;
+        }
+    }
+
+    /**
+     * Replaces the text in the panel while respecting the initial formatting
+     *
+     * @param from       the text to be replaced
+     * @param to         the replaced text
+     * @param replaceAll whether to replace all occurrences or just the first
+     * @return true if replaced successfully, false if unable to replace
+     */
+    private boolean replaceText(String from, String to, boolean caseSensitive, boolean replaceAll) {
+        boolean flag;
+        boolean replaced = false;
+        do {
+            flag = replaceText(from, to, caseSensitive);
+            replaced = flag || replaced;
+        } while (flag && replaceAll);
+        return replaced;
+    }
+
+    private boolean replaceText(String from, String to, boolean caseSensitive) {
+        var data = textPane.getText();
+
+        if (!caseSensitive) {
+            data = data.toLowerCase(Locale.US);
+            from = from.toLowerCase(Locale.US);
+        }
+
+        var index = data.indexOf(from);
+        if (index >= 0) {
+            var list = new ArrayList<AttributeSet>(from.length());
+            var document = textPane.getStyledDocument();
+
+            for (int i = 0; i < from.length(); i++) {
+                list.add(document.getCharacterElement(i + index).getAttributes());
+            }
+
+            try {
+                document.remove(index, from.length());
+                document.insertString(index, to, null);
+
+                var size = list.size();
+
+                for (int i = 0; i < to.length(); i++) {
+                    if (i < size) {
+                        document.setCharacterAttributes(i + index, 1, list.get(i), true);
+                    } else {
+                        // Match the attributes of the last character.
+                        document.setCharacterAttributes(i + index, 1, list.get(size - 1), true);
+                    }
+                }
+            } catch (BadLocationException e) {
+                e.printStackTrace();
+                return false;
+            }
+            findText(to, true);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Replaces the text in the textPane with a dialog for input
+     */
+    void replaceText() {
+        var fromField = new JTextField(15);
+        var toField = new JTextField(15);
+        var replaceAllCheck = new JCheckBox("Replace All", false);
+        var caseSensitiveCheck = new JCheckBox("Match case", true);
+        var panel = new JPanel();
+
+        panel.setLayout(new GridLayout(3, 2));
+        panel.add(new JLabel("Find what:"));
+        panel.add(fromField);
+        panel.add(new JLabel("Replace with:"));
+        panel.add(toField);
+        panel.add(replaceAllCheck);
+        panel.add(caseSensitiveCheck);
+
+        fromField.requestFocus();
+
+        var input = JOptionPane.showConfirmDialog(getTopLevelAncestor(), panel, "Replace",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+        if (input == JOptionPane.OK_OPTION) {
+            if (!replaceText(fromField.getText(), toField.getText(), caseSensitiveCheck.isSelected(),
+                    replaceAllCheck.isSelected())) {
+                JOptionPane.showMessageDialog(getTopLevelAncestor(), "The text was not found.",
+                        "TextEditor", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
     }
 }

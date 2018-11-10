@@ -10,6 +10,13 @@ import java.io.IOException;
 public class Main {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
+            // Native look and feel
+            try {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException |
+                    UnsupportedLookAndFeelException ignore) {
+            }
+
             final var frame = new JFrame("TextEditor");
             final var editor = new Editor();
             frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -60,6 +67,7 @@ public class Main {
             JMenuItem copyButton = new JMenuItem("Copy");
             JMenuItem pasteButton = new JMenuItem("Paste");
             JMenuItem findButton = new JMenuItem("Find...");
+            JMenuItem replaceButton = new JMenuItem("Replace...");
 
             JCheckBoxMenuItem boldButton = new JCheckBoxMenuItem("Bold");
             JCheckBoxMenuItem italicButton = new JCheckBoxMenuItem("Italics");
@@ -69,11 +77,13 @@ public class Main {
             copyButton.setAccelerator(KeyStroke.getKeyStroke('C', InputEvent.CTRL_DOWN_MASK));
             pasteButton.setAccelerator(KeyStroke.getKeyStroke('V', InputEvent.CTRL_DOWN_MASK));
             findButton.setAccelerator(KeyStroke.getKeyStroke('F', InputEvent.CTRL_DOWN_MASK));
+            replaceButton.setAccelerator(KeyStroke.getKeyStroke('H', InputEvent.CTRL_DOWN_MASK));
 
             cutButton.addActionListener(e -> editor.cut());
             copyButton.addActionListener(e -> editor.copy());
             pasteButton.addActionListener(e -> editor.paste());
             findButton.addActionListener(e -> editor.findText());
+            replaceButton.addActionListener(e -> editor.replaceText());
 
             fileMenu.add(openButton);
             fileMenu.add(new JSeparator());
@@ -84,6 +94,7 @@ public class Main {
             editMenu.add(pasteButton);
             editMenu.add(new JSeparator());
             editMenu.add(findButton);
+            editMenu.add(replaceButton);
 
             formatMenu.add(boldButton);
             formatMenu.add(italicButton);

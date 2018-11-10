@@ -1,12 +1,19 @@
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeListenerProxy;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.InputMismatchException;
 
 class StylizedTextPane extends JTextPane {
     private final StylizedClipboard clipboard = StylizedClipboard.getClipboard();
@@ -14,6 +21,8 @@ class StylizedTextPane extends JTextPane {
     StylizedTextPane() {
         super();
         setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, Color.BLACK, Color.GRAY));
+        // override the default CTRL-H
+        getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.CTRL_DOWN_MASK), "Nothing");
     }
 
     @Override
