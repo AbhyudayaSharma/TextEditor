@@ -322,6 +322,28 @@ class Editor extends JPanel {
     }
 
     /**
+     * Converts the selected text to Uppercase.
+     */
+    void selectionToUpperCase() {
+        var selectionStart = textPane.getSelectionStart();
+        var selectionEnd = textPane.getSelectionEnd();
+        var substring = textPane.getText().substring(selectionStart, selectionEnd);
+        var upperCaseSubstring = substring.toUpperCase(Locale.US);
+        replaceText(substring, upperCaseSubstring, true, selectionStart);
+    }
+
+    /**
+     * Converts the selected text to Lowercase.
+     */
+    void selectionToLowerCase() {
+        var selectionStart = textPane.getSelectionStart();
+        var selectionEnd = textPane.getSelectionEnd();
+        var substring = textPane.getText().substring(selectionStart, selectionEnd);
+        var upperCaseSubstring = substring.toLowerCase(Locale.US);
+        replaceText(substring, upperCaseSubstring, true, selectionStart);
+    }
+
+    /**
      * Replaces the first occurrence of the text 'from' to the text 'to'
      *
      * @param from          the text to be replaced
@@ -330,6 +352,19 @@ class Editor extends JPanel {
      * @return true if able to replace, false otherwise.
      */
     private boolean replaceText(String from, String to, boolean caseSensitive) {
+        return replaceText(from, to, caseSensitive, 0);
+    }
+
+    /**
+     * Replaces the first occurrence of the text 'from' to the text 'to', starting the search from fromIndex
+     *
+     * @param from          the text to be replaced
+     * @param to            the replaced text
+     * @param caseSensitive replace text ignoring case if false
+     * @param fromIndex     the index from which to start the search
+     * @return true if able to replace, false otherwise.
+     */
+    private boolean replaceText(String from, String to, boolean caseSensitive, int fromIndex) {
         var data = textPane.getText();
 
         if (!caseSensitive) {
@@ -337,7 +372,7 @@ class Editor extends JPanel {
             from = from.toLowerCase(Locale.US);
         }
 
-        var index = data.indexOf(from);
+        var index = data.indexOf(from, fromIndex);
         if (index >= 0) {
             var list = new ArrayList<AttributeSet>(from.length());
             var document = textPane.getStyledDocument();

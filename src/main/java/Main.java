@@ -84,6 +84,8 @@ class Main {
             JCheckBoxMenuItem boldButton = new JCheckBoxMenuItem("Bold");
             JCheckBoxMenuItem italicButton = new JCheckBoxMenuItem("Italic");
             JCheckBoxMenuItem underlineButton = new JCheckBoxMenuItem("Underline");
+            JMenuItem upperCaseButton = new JMenuItem("Upper Case");
+            JMenuItem lowerCaseButton = new JMenuItem("Lower Case");
             JMenuItem fontButton = new JMenuItem("Font...");
 
             cutButton.setAccelerator(KeyStroke.getKeyStroke('X', InputEvent.CTRL_DOWN_MASK));
@@ -113,6 +115,9 @@ class Main {
             formatMenu.add(italicButton);
             formatMenu.add(underlineButton);
             formatMenu.add(new JSeparator());
+            formatMenu.add(upperCaseButton);
+            formatMenu.add(lowerCaseButton);
+            formatMenu.add(new JSeparator());
             formatMenu.add(fontButton);
 
             formatMenu.addMenuListener(new MenuListener() {
@@ -135,6 +140,8 @@ class Main {
             boldButton.addActionListener(e -> editor.toggleBoldOnSelection());
             italicButton.addActionListener(e -> editor.toggleItalicsOnSelection());
             underlineButton.addActionListener(e -> editor.toggleUnderlineOnSelection());
+            upperCaseButton.addActionListener(e -> editor.selectionToUpperCase());
+            lowerCaseButton.addActionListener(e -> editor.selectionToLowerCase());
 
             boldButton.setAccelerator(KeyStroke.getKeyStroke('B', InputEvent.CTRL_DOWN_MASK));
             italicButton.setAccelerator(KeyStroke.getKeyStroke('I', InputEvent.CTRL_DOWN_MASK));
