@@ -5,12 +5,22 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.StringTokenizer;
+import java.util.function.Function;
 
+/**
+ * A text editor that uses {@link StyledDocument} for setting attributes to each character.
+ *
+ * @author Abhyudaya Sharma
+ */
 class Editor extends JPanel {
     final static String FILE_EXTENSION = ".std";
     private static final String WORD_DELIMITERS = " ,.!?/\\()[]{};:";
     private final StylizedTextPane textPane;
 
+    /**
+     * Creates a new {@link Editor} with a scrollable {@link StylizedTextPane}
+     * which has no soft-wraps.
+     */
     Editor() {
         super();
         textPane = new StylizedTextPane();
@@ -129,24 +139,44 @@ class Editor extends JPanel {
     }
 
     /**
+     * Checks whether each element of the selection has the property applied.
+     *
+     * @param propertyChecker a {@link Function} from {@link StyleConstants} like {@code StyleConstants::isBold}
+     * @return true if all chars in the selection return true for the {@code propertyChecker}, false otherwise.
+     */
+    private boolean selectionHasAttribute(Function<AttributeSet, Boolean> propertyChecker) {
+        var selectionStart = textPane.getSelectionStart();
+        var selectionEnd = textPane.getSelectionEnd();
+        var document = textPane.getStyledDocument();
+
+        boolean hasProperty = selectionStart != selectionEnd;
+        for (int i = selectionStart; i < selectionEnd; i++) {
+            var element = document.getCharacterElement(i);
+
+            if (!propertyChecker.apply(element.getAttributes())) {
+                hasProperty = false;
+                break;
+            }
+        }
+        return hasProperty;
+    }
+
+    /**
      * Checks if the selected text is bold
      *
      * @return true if every character in the selection is bold. Otherwise false.
      */
     boolean isSelectionBold() {
-        var selectionStart = textPane.getSelectionStart();
-        var selectionEnd = textPane.getSelectionEnd();
-        var document = textPane.getStyledDocument();
+        return selectionHasAttribute(StyleConstants::isBold);
+    }
 
-        boolean isBold = selectionStart != selectionEnd;
-        for (int i = selectionStart; i < selectionEnd; i++) {
-            var element = document.getCharacterElement(i);
-            if (!StyleConstants.isBold(element.getAttributes())) {
-                isBold = false;
-                break;
-            }
-        }
-        return isBold;
+    /**
+     * Checks if the selected text is italic
+     *
+     * @return true if every character in the selection is italic. Otherwise false.
+     */
+    boolean isSelectionItalic() {
+        return selectionHasAttribute(StyleConstants::isItalic);
     }
 
     /**
@@ -155,19 +185,7 @@ class Editor extends JPanel {
      * @return true if every character in the selection is underline. Otherwise false.
      */
     boolean isSelectionUnderline() {
-        var selectionStart = textPane.getSelectionStart();
-        var selectionEnd = textPane.getSelectionEnd();
-        var document = textPane.getStyledDocument();
-
-        boolean isUnderline = selectionStart != selectionEnd;
-        for (int i = selectionStart; i < selectionEnd; i++) {
-            var element = document.getCharacterElement(i);
-            if (!StyleConstants.isUnderline(element.getAttributes())) {
-                isUnderline = false;
-                break;
-            }
-        }
-        return isUnderline;
+        return selectionHasAttribute(StyleConstants::isUnderline);
     }
 
     /**
@@ -196,28 +214,6 @@ class Editor extends JPanel {
             document.setCharacterAttributes(i, 1, newAttributes, true);
         }
     }
-
-    /**
-     * Checks if the selected text is italic
-     *
-     * @return true if every character in the selection is italic. Otherwise false.
-     */
-    boolean isSelectionItalic() {
-        var selectionStart = textPane.getSelectionStart();
-        var selectionEnd = textPane.getSelectionEnd();
-        var document = textPane.getStyledDocument();
-
-        boolean isItalics = selectionStart != selectionEnd;
-        for (int i = selectionStart; i < selectionEnd; i++) {
-            var element = document.getCharacterElement(i);
-            if (!StyleConstants.isItalic(element.getAttributes())) {
-                isItalics = false;
-                break;
-            }
-        }
-        return isItalics;
-    }
-
 
     /**
      * Wrapper for cut
