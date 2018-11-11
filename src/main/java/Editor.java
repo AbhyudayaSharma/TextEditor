@@ -5,6 +5,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.StringTokenizer;
+import java.util.function.BiConsumer;
+import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 
 /**
@@ -124,18 +126,21 @@ class Editor extends JPanel {
      * Toggles the BOLD attribute on the selected text
      */
     void toggleBoldOnSelection() {
-        Style bold = textPane.addStyle("bold", null);
-        StyleConstants.setBold(bold, !isSelectionBold());
-        addAttribute(bold);
+        toggleAttributeOnSelection("bold", StyleConstants::setBold, this::isSelectionBold);
+    }
+
+    /**
+     * Toggles ITALIC on selected text
+     */
+    void toggleItalicsOnSelection() {
+        toggleAttributeOnSelection("italic", StyleConstants::setItalic, this::isSelectionItalic);
     }
 
     /**
      * Toggles the UNDERLINE attribute on the selected text.
      */
     void toggleUnderlineOnSelection() {
-        Style underline = textPane.addStyle("underline", null);
-        StyleConstants.setUnderline(underline, !isSelectionUnderline());
-        addAttribute(underline);
+        toggleAttributeOnSelection("underline", StyleConstants::setUnderline, this::isSelectionUnderline);
     }
 
     /**
@@ -189,12 +194,18 @@ class Editor extends JPanel {
     }
 
     /**
-     * Toggles ITALIC on selected text
+     * Toggles an attribute on the selection. Toggle is based on the value of selectionAttributeChecker.
+     *
+     * @param styleName                 the name for the attribute style
+     * @param attributeSetter           {@link BiConsumer} used to set the attribute on the selection,
+     *                                  for example, StyleConstants::setBold.
+     * @param selectionAttributeChecker checks whether the attribute is currently applied. The value returned
+     *                                  by this is used to toggle the attribute.
      */
-    void toggleItalicsOnSelection() {
-        Style italic = textPane.addStyle("italic", null);
-        StyleConstants.setItalic(italic, !isSelectionItalic());
-        addAttribute(italic);
+    private void toggleAttributeOnSelection(String styleName, BiConsumer<Style, Boolean> attributeSetter, BooleanSupplier selectionAttributeChecker) {
+        Style style = textPane.addStyle(styleName, null);
+        attributeSetter.accept(style, !selectionAttributeChecker.getAsBoolean());
+        addAttribute(style);
     }
 
     /**
