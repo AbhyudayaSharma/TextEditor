@@ -109,7 +109,8 @@ class Editor extends JPanel {
         if (textPane.getText().length() != 0) {
             int response = JOptionPane.showOptionDialog(getTopLevelAncestor(), "You have data in you editor. " +
                             "You will lose it when you load a new file. Do you want to continue?", "Warning",
-                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, JOptionPane.NO_OPTION);
+                    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE,
+                    null, null, JOptionPane.NO_OPTION);
             if (response == JOptionPane.NO_OPTION) {
                 return;
             }
@@ -202,7 +203,8 @@ class Editor extends JPanel {
      * @param selectionAttributeChecker checks whether the attribute is currently applied. The value returned
      *                                  by this is used to toggle the attribute.
      */
-    private void toggleAttributeOnSelection(String styleName, BiConsumer<Style, Boolean> attributeSetter, BooleanSupplier selectionAttributeChecker) {
+    private void toggleAttributeOnSelection(String styleName, BiConsumer<Style, Boolean> attributeSetter,
+                                            BooleanSupplier selectionAttributeChecker) {
         Style style = textPane.addStyle(styleName, null);
         attributeSetter.accept(style, !selectionAttributeChecker.getAsBoolean());
         addAttribute(style);
