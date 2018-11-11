@@ -256,7 +256,7 @@ class Editor extends JPanel {
         var input = JOptionPane.showConfirmDialog(getTopLevelAncestor(), panel,
                 "Find", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (input == JOptionPane.OK_OPTION) {
-            if (!findText(textField.getText(), checkBox.isSelected())) {
+            if (!findText(textField.getText(), checkBox.isSelected(), false)) {
                 JOptionPane.showMessageDialog(getTopLevelAncestor(), "Given text was not found in the editor.",
                         "Text not found", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -268,8 +268,10 @@ class Editor extends JPanel {
      *
      * @param str           the string to be found
      * @param caseSensitive find text ignoring case if false
+     * @param lastIndex     true => last index; false => first index
+     * @return true if the text was found, false otherwise.
      */
-    private boolean findText(String str, boolean caseSensitive) {
+    private boolean findText(String str, boolean caseSensitive, boolean lastIndex) {
         var data = textPane.getText();
 
         // convert both to lowercase if not case-sensitive
@@ -278,7 +280,7 @@ class Editor extends JPanel {
             str = str.toLowerCase(Locale.US);
         }
 
-        var index = data.indexOf(str);
+        var index = lastIndex ? data.lastIndexOf(str) : data.indexOf(str);
         if (index >= 0) {
             textPane.setSelectionStart(index);
             textPane.setSelectionEnd(index + str.length());
@@ -304,6 +306,11 @@ class Editor extends JPanel {
             flag = replaceText(from, to, caseSensitive);
             replaced = flag || replaced;
         } while (flag && replaceAll);
+
+        if (replaceAll) {
+            // If all occurrences have been replaced, highlight the last occurrence.
+            findText(to, true, true);
+        }
         return replaced;
     }
 
@@ -350,7 +357,7 @@ class Editor extends JPanel {
                 e.printStackTrace();
                 return false;
             }
-            findText(to, true);
+            findText(to, true, false);
             return true;
         } else {
             return false;
