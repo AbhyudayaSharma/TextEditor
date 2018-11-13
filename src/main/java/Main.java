@@ -142,6 +142,14 @@ class Main {
             underlineButton.addActionListener(e -> editor.toggleUnderlineOnSelection());
             upperCaseButton.addActionListener(e -> editor.selectionToUpperCase());
             lowerCaseButton.addActionListener(e -> editor.selectionToLowerCase());
+            fontButton.addActionListener(e -> {
+                var fontSelector = new FontSelector();
+                var response = JOptionPane.showConfirmDialog(frame, fontSelector, "Font",
+                        JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                if (response == JOptionPane.OK_OPTION) {
+                    editor.setSelectionFont(fontSelector.getSelectedFont());
+                }
+            });
 
             boldButton.setAccelerator(KeyStroke.getKeyStroke('B', InputEvent.CTRL_DOWN_MASK));
             italicButton.setAccelerator(KeyStroke.getKeyStroke('I', InputEvent.CTRL_DOWN_MASK));

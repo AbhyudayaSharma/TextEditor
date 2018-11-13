@@ -452,4 +452,16 @@ class Editor extends JPanel {
                 "Confirm exit", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         return output == JOptionPane.YES_OPTION;
     }
+
+    /**
+     * Sets the font on the selected text in the editor.
+     *
+     * @param font the font to be set to the selected text.
+     */
+    void setSelectionFont(final Font font) {
+        var style = textPane.addStyle("font", null);
+        StyleConstants.setFontFamily(style, font.getFamily());
+        StyleConstants.setFontSize(style, font.getSize());
+        addAttribute(style);
+    }
 }
