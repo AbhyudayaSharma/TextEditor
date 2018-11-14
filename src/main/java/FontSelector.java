@@ -11,7 +11,6 @@ class FontSelector extends JPanel {
         return new Dimension(300, 300);
     }
 
-
     Font getSelectedFont() {
         // TODO: 11/13/2018 Start Here 
         return super.getFont();
