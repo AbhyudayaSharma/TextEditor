@@ -1,3 +1,5 @@
+package drawing;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -13,11 +15,11 @@ enum ClosestPoint {
     CENTER
 }
 
-class DrawingPanel extends JPanel {
+class RectanglePanel extends JPanel {
     private final Rectangle rectangle = new Rectangle(50, 50, 50, 50);
     private ClosestPoint closestPoint = null;
 
-    DrawingPanel() {
+    RectanglePanel() {
         super();
         setLayout(null);
         setBorder(BorderFactory.createEtchedBorder());

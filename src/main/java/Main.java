@@ -1,3 +1,5 @@
+import drawing.DrawingPanel;
+
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.event.MenuEvent;
@@ -170,7 +172,7 @@ class Main {
             modeGroup.add(shapesRadio);
 
             shapesRadio.addActionListener(e -> {
-                JOptionPane.showMessageDialog(frame, new DrawingPanel(), "Drawing Mode",
+                JOptionPane.showMessageDialog(frame, new DrawingPanel(), "drawing Mode",
                         JOptionPane.PLAIN_MESSAGE);
                 editorRadio.setSelected(true);
             });
