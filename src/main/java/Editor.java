@@ -16,7 +16,7 @@ import java.util.function.Function;
  */
 class Editor extends JPanel {
     final static String FILE_EXTENSION = ".std";
-    private static final String WORD_DELIMITERS = " ,.!?/\\()[]{};:";
+    private static final String WORD_DELIMITERS = " ,.!?/\\()[]{};:\t\r\n";
     private final StylizedTextPane textPane;
 
     /**
