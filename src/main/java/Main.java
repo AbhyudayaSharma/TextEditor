@@ -172,7 +172,7 @@ class Main {
             modeGroup.add(shapesRadio);
 
             shapesRadio.addActionListener(e -> {
-                JOptionPane.showMessageDialog(frame, new DrawingPanel(), "drawing Mode",
+                JOptionPane.showMessageDialog(frame, new DrawingPanel(), "Drawing Mode",
                         JOptionPane.PLAIN_MESSAGE);
                 editorRadio.setSelected(true);
             });
