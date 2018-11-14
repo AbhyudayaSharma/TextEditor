@@ -53,11 +53,8 @@ class Editor extends JPanel {
      * @return the number of words in the current selection
      */
     int selectedWordCount() {
-        var selectionStart = textPane.getSelectionStart();
-        var selectionEnd = textPane.getSelectionEnd();
-        return selectionStart == selectionEnd ? 0 :
-                new StringTokenizer(textPane.getText().substring(selectionStart, selectionEnd), WORD_DELIMITERS)
-                        .countTokens();
+        return textPane.getSelectionStart() == textPane.getSelectionEnd() ? 0 :
+                new StringTokenizer(textPane.getSelectedText(), WORD_DELIMITERS).countTokens();
     }
 
     /**
