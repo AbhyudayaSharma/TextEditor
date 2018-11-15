@@ -16,7 +16,7 @@ import java.util.function.Function;
  */
 class Editor extends JPanel {
     final static String FILE_EXTENSION = ".std";
-    private static final String WORD_DELIMITERS = " ,.!?/\\()[]{};:";
+    private static final String WORD_DELIMITERS = " ,.!?/\\()[]{};:\t\r\n";
     private final StylizedTextPane textPane;
 
     /**
@@ -53,11 +53,8 @@ class Editor extends JPanel {
      * @return the number of words in the current selection
      */
     int selectedWordCount() {
-        var selectionStart = textPane.getSelectionStart();
-        var selectionEnd = textPane.getSelectionEnd();
-        return selectionStart == selectionEnd ? 0 :
-                new StringTokenizer(textPane.getText().substring(selectionStart, selectionEnd), WORD_DELIMITERS)
-                        .countTokens();
+        return textPane.getSelectionStart() == textPane.getSelectionEnd() ? 0 :
+                new StringTokenizer(textPane.getSelectedText(), WORD_DELIMITERS).countTokens();
     }
 
     /**
