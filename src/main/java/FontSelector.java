@@ -12,7 +12,8 @@ class FontSelector extends JPanel {
     }
 
     Font getSelectedFont() {
-        // TODO: 11/13/2018 Start Here 
+        // TODO: 11/13/2018 Start Here
+        System.out.println("font selected");
         return super.getFont();
     }
 }
