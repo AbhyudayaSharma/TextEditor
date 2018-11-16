@@ -2,6 +2,9 @@ package drawing;
 
 import java.util.Locale;
 
+/**
+ * Shapes supported by {@link DrawingPanel}
+ */
 enum Shape {
     RECTANGLE,
     CIRCLE,

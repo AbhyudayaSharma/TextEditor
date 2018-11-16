@@ -5,6 +5,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
+/**
+ * A panel which allows the user to change the size of the circle
+ */
 class CirclePanel extends AbstractShapePanel {
     private final Circle circle = new Circle(100, new Point(200, 200));
     private ClosestPoint closestPoint = null;
@@ -23,7 +26,6 @@ class CirclePanel extends AbstractShapePanel {
                     if (circle.distanceFromCenter(initialPoint) < circle.distanceFromCircumference(initialPoint)) {
                         closestPoint = ClosestPoint.CENTER;
                     } else {
-//                        closestPoint = ClosestPoint.CIRCUMFERENCE;
                         var angle = circle.getRelativeAngle(e.getPoint());
                         if (angle >= 0 && angle <= 90) {
                             closestPoint = ClosestPoint.TOP_RIGHT;
@@ -85,26 +87,54 @@ class CirclePanel extends AbstractShapePanel {
                 circle.diameter, circle.diameter);
     }
 
+    /**
+     * Internal class containing properties of the circle
+     * drawn in the {@link CirclePanel}
+     */
     private static class Circle {
         private int radius;
         private int diameter;
         private Point center;
 
+        /**
+         * Creates a circle with the specified params
+         *
+         * @param diameter diameter of the circle
+         * @param center   the coordinates of the circle
+         */
         private Circle(int diameter, Point center) {
             this.diameter = diameter;
             this.radius = diameter / 2;
             this.center = center;
         }
 
+        /**
+         * Checks whether a point is inside the circle
+         *
+         * @param p the point
+         * @return true if inside the circle, false otherwise.
+         */
         private boolean containsPoint(Point p) {
             var distance = Point.distance(p.x, p.y, center.x, center.y);
             return distance <= radius;
         }
 
+        /**
+         * Calculates the distance of a point from the centre of the circle
+         *
+         * @param p the point
+         * @return distance to the centre of the circle
+         */
         private double distanceFromCenter(Point p) {
             return Point.distance(center.x, center.y, p.x, p.y);
         }
 
+        /**
+         * Calculates the distance of a point from the circumference of the circle
+         *
+         * @param p the point
+         * @return distance to the circumference
+         */
         private double distanceFromCircumference(Point p) {
             double ret;
             if (containsPoint(p)) {
@@ -115,6 +145,11 @@ class CirclePanel extends AbstractShapePanel {
             return ret;
         }
 
+        /**
+         * Increase the diameter of the circle
+         *
+         * @param x the amount by which to increase the diameter.
+         */
         private void grow(double x) {
             diameter += x;
             radius = diameter / 2;

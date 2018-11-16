@@ -3,6 +3,10 @@ package drawing;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * A common base for all the panels which draw a user-movable shape
+ * specifying common properties.
+ */
 abstract class AbstractShapePanel extends JPanel {
     AbstractShapePanel() {
         super();
@@ -11,9 +15,14 @@ abstract class AbstractShapePanel extends JPanel {
 
     @Override
     final public LayoutManager getLayout() {
-        return null;
+        return null; // null layout for manual drawing
     }
 
+    /**
+     * Override to perform the drawing on the panel
+     *
+     * @param g the graphics
+     */
     protected abstract void draw(Graphics g);
 
     @Override

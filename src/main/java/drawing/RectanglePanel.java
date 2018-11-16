@@ -6,6 +6,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.TreeMap;
 
+/**
+ * A panel which draws a rectangle. The size and position of the rectangle can be
+ * modified by using the mouse.
+ */
 class RectanglePanel extends AbstractShapePanel {
     private final Rectangle rectangle = new Rectangle(50, 50, 50, 50);
     private ClosestPoint closestPoint = null;

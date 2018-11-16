@@ -3,6 +3,11 @@ package drawing;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Panel which supports mouse-driven change in position and size of various shapes
+ *
+ * @see Shape for supported shapes.
+ */
 public class DrawingPanel extends JPanel {
     private AbstractShapePanel shapePanel;
 
@@ -14,10 +19,10 @@ public class DrawingPanel extends JPanel {
 
         var comboBox = new JComboBox<>(new Shape[]{
                 Shape.RECTANGLE,
+                Shape.CIRCLE,
                 Shape.SQUARE,
                 Shape.TRIANGLE,
                 Shape.OVAL,
-                Shape.CIRCLE,
         });
 
         comboBox.addActionListener(e -> {
@@ -43,6 +48,10 @@ public class DrawingPanel extends JPanel {
         add(shapePanel);
     }
 
+    /**
+     * Changes the currently drawn shapePanel
+     * @param shape the new {@link AbstractShapePanel} to draw
+     */
     private void changeShapePanel(AbstractShapePanel shape) {
         remove(shapePanel);
         shapePanel = shape;
