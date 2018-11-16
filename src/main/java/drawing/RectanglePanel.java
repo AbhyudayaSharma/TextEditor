@@ -1,28 +1,17 @@
 package drawing;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.TreeMap;
 
-enum ClosestPoint {
-    TOP_LEFT,
-    TOP_RIGHT,
-    BOTTOM_LEFT,
-    BOTTOM_RIGHT,
-    CENTER
-}
-
-class RectanglePanel extends JPanel {
+class RectanglePanel extends AbstractShapePanel {
     private final Rectangle rectangle = new Rectangle(50, 50, 50, 50);
     private ClosestPoint closestPoint = null;
 
     RectanglePanel() {
         super();
-        setLayout(null);
-        setBorder(BorderFactory.createEtchedBorder());
         Point initialPoint = new Point();
         addMouseListener(new MouseAdapter() {
             @Override
@@ -112,13 +101,7 @@ class RectanglePanel extends JPanel {
     }
 
     @Override
-    public Dimension getPreferredSize() {
-        return new Dimension(400, 400);
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.drawRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+    protected void draw(Graphics g) {
+        g.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
     }
 }
