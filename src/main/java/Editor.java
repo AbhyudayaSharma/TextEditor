@@ -19,6 +19,8 @@ class Editor extends JPanel {
     private static final String WORD_DELIMITERS = " ,.!?/\\()[]{};:\t\r\n";
     private final StylizedTextPane textPane;
 
+    static final Font DEFAULT_FONT = new Font("Arial", Font.PLAIN, 14);
+
     /**
      * Creates a new {@link Editor} with a scrollable {@link StylizedTextPane}
      * which has no soft-wraps.
@@ -36,6 +38,9 @@ class Editor extends JPanel {
         // add the scrollPane
         setLayout(new GridLayout(1, 1));
         add(scrollPane);
+
+        // set default font
+        textPane.setFont(DEFAULT_FONT);
     }
 
     /**
