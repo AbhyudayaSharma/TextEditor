@@ -49,9 +49,7 @@ class CirclePanel extends AbstractShapePanel {
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                if (closestPoint == null) {
-                    return;
-                }
+                if (closestPoint == null) return;
 
                 var dx = e.getX() - initialPoint.x;
                 var dy = e.getY() - initialPoint.y;
@@ -83,8 +81,12 @@ class CirclePanel extends AbstractShapePanel {
 
     @Override
     protected void draw(Graphics g) {
-        g.drawOval(circle.center.x - circle.radius, circle.center.y - circle.radius,
+        g.drawString("Start dragging near the red circle to move the circle", 10, 20);
+        g.fillOval(circle.center.x - circle.radius, circle.center.y - circle.radius,
                 circle.diameter, circle.diameter);
+        g.setColor(Color.RED);
+        g.fillOval(circle.center.x, circle.center.y, 5, 5);
+        g.setColor(Color.BLACK);
     }
 
     /**

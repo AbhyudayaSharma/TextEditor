@@ -20,8 +20,8 @@ public class DrawingPanel extends JPanel {
         var comboBox = new JComboBox<>(new Shape[]{
                 Shape.RECTANGLE,
                 Shape.CIRCLE,
-                Shape.SQUARE,
                 Shape.TRIANGLE,
+                Shape.SQUARE,
                 Shape.OVAL,
         });
 
@@ -35,6 +35,9 @@ public class DrawingPanel extends JPanel {
                     break;
                 case CIRCLE:
                     if (!(shapePanel instanceof CirclePanel)) changeShapePanel(new CirclePanel());
+                    break;
+                case TRIANGLE:
+                    if (!(shapePanel instanceof TrianglePanel)) changeShapePanel(new TrianglePanel());
                     break;
                 default:
                     System.out.println("Not yet supported");

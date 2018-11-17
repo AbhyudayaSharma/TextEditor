@@ -5,9 +5,40 @@ package drawing;
  * in an {@link AbstractShapePanel} when selected using a mouse.
  */
 enum ClosestPoint {
-    TOP_LEFT,
-    TOP_RIGHT,
-    BOTTOM_LEFT,
-    BOTTOM_RIGHT,
-    CENTER
+    TOP_LEFT(0),
+    TOP_RIGHT(1),
+    BOTTOM_LEFT(2),
+    BOTTOM_RIGHT(3),
+    CENTER(4);
+
+    private int i;
+
+    ClosestPoint(int i) {
+        this.i = i;
+    }
+
+    /**
+     * Get the enum from its value
+     *
+     * @param i the value to be checked
+     * @return the {@link ClosestPoint} with the matching value. null if there is no such point.
+     */
+    static ClosestPoint valueOf(int i) {
+        var values = values();
+        for (ClosestPoint value : values) {
+            if (value.getValue() == i) {
+                return value;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Get the value of the enum
+     *
+     * @return the value of the enum
+     */
+    int getValue() {
+        return i;
+    }
 }

@@ -51,9 +51,8 @@ class RectanglePanel extends AbstractShapePanel {
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                if (closestPoint == null) {
-                    return;
-                }
+                if (closestPoint == null) return;
+
                 var dx = e.getX() - initialPoint.getX();
                 var dy = e.getY() - initialPoint.getY();
                 initialPoint.x = e.getX();
@@ -99,6 +98,7 @@ class RectanglePanel extends AbstractShapePanel {
 
                     closestPoint = ClosestPoint.valueOf(newClosestPointName.toString());
                 }
+
                 repaint();
             }
         });
@@ -106,6 +106,10 @@ class RectanglePanel extends AbstractShapePanel {
 
     @Override
     protected void draw(Graphics g) {
+        g.drawString("Start dragging near the red circle to move the rectangle", 10, 20);
         g.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+        g.setColor(Color.RED);
+        g.fillOval((int) rectangle.getCenterX(), (int) rectangle.getCenterY(), 5, 5);
+        g.setColor(Color.BLACK);
     }
 }
