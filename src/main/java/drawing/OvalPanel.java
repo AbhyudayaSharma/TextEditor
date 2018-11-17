@@ -29,8 +29,8 @@ public class OvalPanel extends RectanglePanel {
 
     @Override
     protected void draw(Graphics g) {
-        g.drawString("Click on the oval to select it. Use the red circle to move the oval.", 10, 20);
-        g.drawString("Use the blue circles to change its dimensions.", 10, 35);
+        g.drawString("Click on the oval to select it. Then, use the red circle to move the oval.", 10, 20);
+        g.drawString("Also, you can use the blue circles to change its dimensions.", 10, 35);
         var rect = super.getRectangle();
         g.fillOval(rect.x, rect.y, rect.width, rect.height);
 

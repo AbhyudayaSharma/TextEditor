@@ -109,7 +109,7 @@ class RectanglePanel extends AbstractShapePanel {
 
     @Override
     protected void draw(Graphics g) {
-        g.drawString("Start dragging near the red circle to move the rectangle", 10, 20);
+        g.drawString(polygonMovementInstructions, 10, 20);
         g.fillRect(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
         g.setColor(Color.RED);
         g.fillOval((int) rectangle.getCenterX(), (int) rectangle.getCenterY(), 5, 5);

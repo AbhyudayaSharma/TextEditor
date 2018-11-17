@@ -81,7 +81,8 @@ class CirclePanel extends AbstractShapePanel {
 
     @Override
     protected void draw(Graphics g) {
-        g.drawString("Start dragging near the red circle to move the circle", 10, 20);
+        g.drawString("Drag the red circle to move the figure. Drag near the circumference to change", 10, 20);
+        g.drawString("the diameter.", 10, 35);
         g.fillOval(circle.center.x - circle.radius, circle.center.y - circle.radius,
                 circle.diameter, circle.diameter);
         g.setColor(Color.RED);

@@ -9,7 +9,10 @@ enum ClosestPoint {
     TOP_RIGHT(1),
     BOTTOM_LEFT(2),
     BOTTOM_RIGHT(3),
-    CENTER(4);
+    // Extra points for drawing.HexagonPanel
+    HEXAGON_POINT_1(4),
+    HEXAGON_POINT_2(5),
+    CENTER(6); // XXX: Always keep as the last value
 
     private int i;
 

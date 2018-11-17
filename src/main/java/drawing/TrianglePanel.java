@@ -10,7 +10,7 @@ import java.awt.event.MouseMotionAdapter;
  * modified by using the mouse.
  */
 class TrianglePanel extends AbstractShapePanel {
-    private Polygon triangle = new Polygon(new int[]{100, 150, 200}, new int[]{200, 150, 200}, 3);
+    private Polygon triangle = new Polygon(new int[]{100, 200, 300}, new int[]{300, 100, 250}, 3);
 
     /**
      * We use TOP_LEFT, TOP_RIGHT, and BOTTOM_LEFT for the three points, irrespective of their
@@ -104,7 +104,7 @@ class TrianglePanel extends AbstractShapePanel {
 
     @Override
     protected void draw(Graphics g) {
-        g.drawString(" Start dragging near the red circle to move the triangle", 10, 20);
+        g.drawString(polygonMovementInstructions, 10, 20);
         g.fillPolygon(triangle);
         var box = triangle.getBounds();
         g.setColor(Color.RED);

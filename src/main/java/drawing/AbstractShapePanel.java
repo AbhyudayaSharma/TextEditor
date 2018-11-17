@@ -19,6 +19,12 @@ abstract class AbstractShapePanel extends JPanel {
     }
 
     /**
+     * Generalized instructions for moving any polygon inside the panel
+     */
+    final String polygonMovementInstructions = "Drag the red circle to move the figure. " +
+            "Drag any vertex to change its position";
+
+    /**
      * Override to perform the drawing on the panel
      *
      * @param g the graphics
