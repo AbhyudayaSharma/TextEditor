@@ -4,13 +4,10 @@ import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.IOException;
 
 class Main {
     public static void main(String[] args) {
@@ -36,59 +33,35 @@ class Main {
                 }
             });
 
-            JMenuBar menuBar = new JMenuBar();
-            JMenu fileMenu = new JMenu("File");
-            JMenu editMenu = new JMenu("Edit");
-            JMenu formatMenu = new JMenu("Format");
+            var menuBar = new JMenuBar();
+            var fileMenu = new JMenu("File");
+            var editMenu = new JMenu("Edit");
+            var formatMenu = new JMenu("Format");
 
-            JMenuItem saveButton = new JMenuItem("Save...");
+            var saveButton = new JMenuItem("Save");
+            var saveAsButton = new JMenuItem("Save As...");
+            var openButton = new JMenuItem("Open...");
+
             saveButton.setAccelerator(KeyStroke.getKeyStroke('S', InputEvent.CTRL_DOWN_MASK));
-            saveButton.addActionListener(e -> {
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setFileFilter(new FileNameExtensionFilter("Styled documents",
-                        Editor.FILE_EXTENSION.substring(1))); // FileNameExtensionFilter doesn't want a '.'
-                fileChooser.showDialog(frame, "Save");
-                File file = fileChooser.getSelectedFile();
-                if (file != null) {
-                    try {
-                        editor.save(file);
-                        JOptionPane.showMessageDialog(frame, "File written successfully!", "Information",
-                                JOptionPane.INFORMATION_MESSAGE);
-                    } catch (IOException ex) {
-                        JOptionPane.showMessageDialog(frame, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-            });
+            saveButton.addActionListener(e -> editor.save());
 
-            JMenuItem openButton = new JMenuItem("Open...");
+            saveAsButton.addActionListener(e -> editor.saveAs());
+
             openButton.setAccelerator(KeyStroke.getKeyStroke('O', InputEvent.CTRL_DOWN_MASK));
-            openButton.addActionListener(e -> {
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setFileFilter(new FileNameExtensionFilter("Styled documents",
-                        Editor.FILE_EXTENSION.substring(1))); // FileNameExtensionFilter doesn't want a '.'
-                fileChooser.showDialog(frame, "Open");
-                File file = fileChooser.getSelectedFile();
-                if (file != null) {
-                    try {
-                        editor.open(file);
-                    } catch (IOException ex) {
-                        JOptionPane.showMessageDialog(frame, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-            });
+            openButton.addActionListener(e -> editor.open());
 
-            JMenuItem cutButton = new JMenuItem("Cut");
-            JMenuItem copyButton = new JMenuItem("Copy");
-            JMenuItem pasteButton = new JMenuItem("Paste");
-            JMenuItem findButton = new JMenuItem("Find...");
-            JMenuItem replaceButton = new JMenuItem("Replace...");
+            var cutButton = new JMenuItem("Cut");
+            var copyButton = new JMenuItem("Copy");
+            var pasteButton = new JMenuItem("Paste");
+            var findButton = new JMenuItem("Find...");
+            var replaceButton = new JMenuItem("Replace...");
 
-            JCheckBoxMenuItem boldButton = new JCheckBoxMenuItem("Bold");
-            JCheckBoxMenuItem italicButton = new JCheckBoxMenuItem("Italic");
-            JCheckBoxMenuItem underlineButton = new JCheckBoxMenuItem("Underline");
-            JMenuItem upperCaseButton = new JMenuItem("Upper Case");
-            JMenuItem lowerCaseButton = new JMenuItem("Lower Case");
-            JMenuItem fontButton = new JMenuItem("Font...");
+            var boldButton = new JCheckBoxMenuItem("Bold");
+            var italicButton = new JCheckBoxMenuItem("Italic");
+            var underlineButton = new JCheckBoxMenuItem("Underline");
+            var upperCaseButton = new JMenuItem("Upper Case");
+            var lowerCaseButton = new JMenuItem("Lower Case");
+            var fontButton = new JMenuItem("Font...");
 
             cutButton.setAccelerator(KeyStroke.getKeyStroke('X', InputEvent.CTRL_DOWN_MASK));
             copyButton.setAccelerator(KeyStroke.getKeyStroke('C', InputEvent.CTRL_DOWN_MASK));
@@ -105,6 +78,7 @@ class Main {
             fileMenu.add(openButton);
             fileMenu.add(new JSeparator());
             fileMenu.add(saveButton);
+            fileMenu.add(saveAsButton);
 
             editMenu.add(cutButton);
             editMenu.add(copyButton);
@@ -162,12 +136,12 @@ class Main {
             menuBar.add(formatMenu);
             frame.setJMenuBar(menuBar);
 
-            JPanel statusBar = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-            JLabel wordCountLabel = new JLabel("0 words");
-            JLabel charCountLabel = new JLabel("0 characters");
-            ButtonGroup modeGroup = new ButtonGroup();
-            JRadioButton editorRadio = new JRadioButton("Editor", true);
-            JRadioButton shapesRadio = new JRadioButton("Shapes");
+            var statusBar = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+            var wordCountLabel = new JLabel("0 words");
+            var charCountLabel = new JLabel("0 characters");
+            var modeGroup = new ButtonGroup();
+            var editorRadio = new JRadioButton("Editor", true);
+            var shapesRadio = new JRadioButton("Shapes");
             modeGroup.add(editorRadio);
             modeGroup.add(shapesRadio);
 
@@ -177,7 +151,6 @@ class Main {
                 editorRadio.setSelected(true);
             });
 
-            statusBar.add(new JSeparator(SwingConstants.VERTICAL));
             statusBar.add(new JLabel("Mode: "));
             statusBar.add(editorRadio);
             statusBar.add(shapesRadio);
@@ -188,7 +161,7 @@ class Main {
             statusBar.add(new JSeparator(SwingConstants.VERTICAL));
             statusBar.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED, Color.BLACK, Color.GRAY));
 
-            // update the word-count and char-count every 200ms
+            // update the word-count, char-count and saved file name every 200ms
             new Timer(200, e -> {
                 // wordCountLabel
                 var wordCount = editor.wordCount();
@@ -209,9 +182,17 @@ class Main {
                     charCountLabel.setText(selectedCharCount + " of " + charCount +
                             (charCount == 1 ? " character" : " characters"));
                 }
+
+                // savedFileLabel
+                var fileName = editor.getSavedFilePath();
+                if (fileName != null) {
+                    frame.setTitle("TextEditor - " + fileName);
+                } else {
+                    frame.setTitle("TextEditor");
+                }
             }).start();
 
-            GridBagConstraints gbc = new GridBagConstraints();
+            var gbc = new GridBagConstraints();
             gbc.gridx = 0;
             gbc.gridy = 0;
             gbc.gridwidth = 1;

@@ -14,7 +14,7 @@ enum ClosestPoint {
     HEXAGON_POINT_2(5),
     CENTER(6); // XXX: Always keep as the last value
 
-    private int i;
+    private final int i;
 
     ClosestPoint(int i) {
         this.i = i;

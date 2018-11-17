@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.*;
 import java.awt.*;
 import java.io.*;
@@ -15,9 +16,11 @@ import java.util.function.Function;
  * @author Abhyudaya Sharma
  */
 class Editor extends JPanel {
-    final static String FILE_EXTENSION = ".std";
+    private static final String FILE_EXTENSION = ".std";
     private static final String WORD_DELIMITERS = " ,.!?/\\()[]{};:\t\r\n";
     private final StylizedTextPane textPane;
+
+    private String savedFilePath = null;
 
     /**
      * Creates a new {@link Editor} with a scrollable {@link StylizedTextPane}
@@ -79,20 +82,75 @@ class Editor extends JPanel {
     }
 
     /**
-     * Saves the data in the editor to a file
-     *
-     * @param file data is written to this file
-     * @throws IOException when unable to write the file
+     * Opens up a dialog to select where to store the file.
      */
-    void save(File file) throws IOException {
-        var path = file.getAbsolutePath();
-        // The file should have the extension applied if it doesn't already
-        if (!path.endsWith(FILE_EXTENSION)) {
-            path += FILE_EXTENSION;
+    void saveAs() {
+        var fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Styled documents",
+                Editor.FILE_EXTENSION.substring(1))); // FileNameExtensionFilter doesn't want a '.'
+        fileChooser.showDialog(this, "Save");
+        var file = fileChooser.getSelectedFile();
+        if (file != null) {
+            // The file should have the extension applied if it doesn't already
+            var path = file.getAbsolutePath();
+            if (!path.endsWith(FILE_EXTENSION)) path += FILE_EXTENSION;
+            saveAs(path, true);
+        }
+    }
+
+    /**
+     * Internal method which provides the logic for writing the textPane's {@link StyledDocument}
+     * to the given filepath.
+     *
+     * @param filePath    the path of the file.
+     * @param checkExists check for replacing the file if already exists
+     */
+    private void saveAs(String filePath, boolean checkExists) {
+        File file = new File(filePath);
+        if (checkExists && file.exists()) {
+            var selection = JOptionPane.showConfirmDialog(getTopLevelAncestor(), "File already exists. " +
+                    "Do you want to replace it?", "Replace?", JOptionPane.YES_NO_OPTION);
+            if (selection == JOptionPane.NO_OPTION) return;
         }
 
-        try (var oos = new ObjectOutputStream(new FileOutputStream(path))) {
+        try (var oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
             oos.writeObject(textPane.getStyledDocument());
+            JOptionPane.showMessageDialog(getTopLevelAncestor(), "File written successfully!",
+                    "Information", JOptionPane.INFORMATION_MESSAGE);
+            savedFilePath = filePath;
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(getTopLevelAncestor(), ex.getMessage(), "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    /**
+     * Save the current text stored in the textPane as a {@link StyledDocument}.
+     */
+    void save() {
+        if (savedFilePath != null) {
+            saveAs(savedFilePath, false);
+        } else {
+            saveAs();
+        }
+    }
+
+    /**
+     * Opens up a dialog to select the {@link StyledDocument} file to be opened
+     */
+    void open() {
+        var fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Styled documents",
+                Editor.FILE_EXTENSION.substring(1))); // FileNameExtensionFilter doesn't want a '.'
+        fileChooser.showDialog(getTopLevelAncestor(), "Open");
+        var file = fileChooser.getSelectedFile();
+        if (file != null) {
+            try {
+                open(file);
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(getTopLevelAncestor(), ex.getMessage(), "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
@@ -102,7 +160,7 @@ class Editor extends JPanel {
      * @param file the Styled Document File to be opened.
      * @throws IOException when unable to open the file
      */
-    void open(File file) throws IOException {
+    private void open(File file) throws IOException {
         if (textPane.getText().length() != 0) {
             int response = JOptionPane.showOptionDialog(getTopLevelAncestor(), "You have data in you editor. " +
                             "You will lose it when you load a new file. Do you want to continue?", "Warning",
@@ -115,6 +173,7 @@ class Editor extends JPanel {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
             var document = (DefaultStyledDocument) ois.readObject();
             textPane.setStyledDocument(document);
+            savedFilePath = file.getAbsolutePath();
         } catch (ClassNotFoundException | IOException e) {
             throw new IOException("Unsupported file format!");
         }
@@ -132,6 +191,15 @@ class Editor extends JPanel {
      */
     void toggleItalicsOnSelection() {
         toggleAttributeOnSelection("italic", StyleConstants::setItalic, this::isSelectionItalic);
+    }
+
+    /**
+     * Returns the filePath to the saved if file (if any)
+     *
+     * @return null if no file is saved, the path of the file otherwise.
+     */
+    String getSavedFilePath() {
+        return savedFilePath;
     }
 
     /**

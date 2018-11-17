@@ -95,9 +95,9 @@ class CirclePanel extends AbstractShapePanel {
      * drawn in the {@link CirclePanel}
      */
     private static class Circle {
+        private final Point center;
         private int radius;
         private int diameter;
-        private Point center;
 
         /**
          * Creates a circle with the specified params
@@ -105,6 +105,7 @@ class CirclePanel extends AbstractShapePanel {
          * @param diameter diameter of the circle
          * @param center   the coordinates of the circle
          */
+        @SuppressWarnings("SameParameterValue")
         private Circle(int diameter, Point center) {
             this.diameter = diameter;
             this.radius = diameter / 2;

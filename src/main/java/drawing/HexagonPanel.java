@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 class HexagonPanel extends AbstractShapePanel {
-    private Polygon hexagon = new Polygon(new int[]{125, 175, 225, 275, 225, 175},
+    private final Polygon hexagon = new Polygon(new int[]{125, 175, 225, 275, 225, 175},
             new int[]{200, 150, 150, 200, 250, 250, 200}, 6);
 
     /**
@@ -55,7 +55,7 @@ class HexagonPanel extends AbstractShapePanel {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                super.mouseReleased(e);
+                closestPoint = null;
             }
         });
 

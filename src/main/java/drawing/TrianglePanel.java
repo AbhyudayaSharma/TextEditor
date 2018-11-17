@@ -10,7 +10,7 @@ import java.awt.event.MouseMotionAdapter;
  * modified by using the mouse.
  */
 class TrianglePanel extends AbstractShapePanel {
-    private Polygon triangle = new Polygon(new int[]{100, 200, 300}, new int[]{300, 100, 250}, 3);
+    private final Polygon triangle = new Polygon(new int[]{100, 200, 300}, new int[]{300, 100, 250}, 3);
 
     /**
      * We use TOP_LEFT, TOP_RIGHT, and BOTTOM_LEFT for the three points, irrespective of their
