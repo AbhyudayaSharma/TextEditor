@@ -22,7 +22,7 @@ public class DrawingPanel extends JPanel {
                 Shape.RECTANGLE,
                 Shape.CIRCLE,
                 Shape.TRIANGLE,
-                Shape.SQUARE,
+                Shape.HEXAGON,
         });
 
         comboBox.addActionListener(e -> {
@@ -41,6 +41,9 @@ public class DrawingPanel extends JPanel {
                     break;
                 case TRIANGLE:
                     if (!(shapePanel instanceof TrianglePanel)) changeShapePanel(new TrianglePanel());
+                    break;
+                case HEXAGON:
+                    if (!(shapePanel instanceof HexagonPanel)) changeShapePanel(new HexagonPanel());
                     break;
                 case OVAL:
                     if (!(shapePanel instanceof OvalPanel)) changeShapePanel(new OvalPanel());

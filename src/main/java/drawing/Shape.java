@@ -10,7 +10,7 @@ enum Shape {
     CIRCLE,
     OVAL,
     TRIANGLE,
-    SQUARE;
+    HEXAGON;
 
     @Override
     final public String toString() {
