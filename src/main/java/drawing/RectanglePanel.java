@@ -23,15 +23,16 @@ class RectanglePanel extends AbstractShapePanel {
                 if (rectangle.contains(e.getPoint())) {
                     initialPoint.x = e.getX();
                     initialPoint.y = e.getY();
-                    var topLeftDistance = Math.hypot(initialPoint.x - rectangle.x, initialPoint.y - rectangle.y);
-                    var bottomLeftDistance = Math.hypot(initialPoint.x - rectangle.x, initialPoint.y -
-                            (rectangle.y + rectangle.width));
-                    var topRightDistance = Math.hypot(initialPoint.x - (rectangle.x + rectangle.height),
-                            initialPoint.y - rectangle.y);
-                    var bottomRightDistance = Math.hypot(initialPoint.x - (rectangle.x + rectangle.width),
-                            initialPoint.y - (rectangle.y + rectangle.width));
-                    var centerDistance = Math.hypot(initialPoint.x - rectangle.getCenterX(),
-                            initialPoint.y - rectangle.getCenterY());
+                    var topLeftDistance = Point.distance(initialPoint.x, initialPoint.y, rectangle.x, rectangle.y);
+                    var topRightDistance = Point.distance(initialPoint.x, initialPoint.y,
+                            rectangle.x + rectangle.width, rectangle.y);
+                    var bottomLeftDistance = Point.distance(initialPoint.x, initialPoint.y,
+                            rectangle.x, rectangle.y + rectangle.height);
+                    var bottomRightDistance = Point.distance(initialPoint.x, initialPoint.y,
+                            rectangle.x + rectangle.width, rectangle.y + rectangle.height);
+                    var centerDistance = Point.distance(initialPoint.x, initialPoint.y,
+                            rectangle.getCenterX(), rectangle.getCenterY());
+
                     var distanceMap = new TreeMap<Double, ClosestPoint>();
                     distanceMap.put(topLeftDistance, ClosestPoint.TOP_LEFT);
                     distanceMap.put(topRightDistance, ClosestPoint.TOP_RIGHT);
@@ -51,7 +52,9 @@ class RectanglePanel extends AbstractShapePanel {
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                if (closestPoint == null) return;
+                if (closestPoint == null) {
+                    return;
+                }
 
                 var dx = e.getX() - initialPoint.getX();
                 var dy = e.getY() - initialPoint.getY();
