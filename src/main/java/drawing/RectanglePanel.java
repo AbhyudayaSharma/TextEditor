@@ -11,7 +11,7 @@ import java.util.TreeMap;
  * modified by using the mouse.
  */
 class RectanglePanel extends AbstractShapePanel {
-    private final Rectangle rectangle = new Rectangle(50, 50, 50, 50);
+    private final Rectangle rectangle = new Rectangle(120, 150, 160, 90); // 16:9 ftw
     private ClosestPoint closestPoint = null;
 
     RectanglePanel() {
@@ -111,5 +111,14 @@ class RectanglePanel extends AbstractShapePanel {
         g.setColor(Color.RED);
         g.fillOval((int) rectangle.getCenterX(), (int) rectangle.getCenterY(), 5, 5);
         g.setColor(Color.BLACK);
+    }
+
+    /**
+     * Returns the rectangle currently being drawn on the panel
+     *
+     * @return the rectangle being drawn currently
+     */
+    Rectangle getRectangle() {
+        return rectangle;
     }
 }

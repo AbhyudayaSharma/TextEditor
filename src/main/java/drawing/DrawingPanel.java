@@ -15,14 +15,14 @@ public class DrawingPanel extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         var radioPanel = new JPanel();
         radioPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        shapePanel = new RectanglePanel();
+        shapePanel = new OvalPanel();
 
         var comboBox = new JComboBox<>(new Shape[]{
+                Shape.OVAL,
                 Shape.RECTANGLE,
                 Shape.CIRCLE,
                 Shape.TRIANGLE,
                 Shape.SQUARE,
-                Shape.OVAL,
         });
 
         comboBox.addActionListener(e -> {
@@ -31,13 +31,19 @@ public class DrawingPanel extends JPanel {
 
             switch (item) {
                 case RECTANGLE:
-                    if (!(shapePanel instanceof RectanglePanel)) changeShapePanel(new RectanglePanel());
+                    // OvalPanel is a RectanglePanel
+                    if (!(shapePanel instanceof RectanglePanel) || shapePanel instanceof OvalPanel) {
+                        changeShapePanel(new RectanglePanel());
+                    }
                     break;
                 case CIRCLE:
                     if (!(shapePanel instanceof CirclePanel)) changeShapePanel(new CirclePanel());
                     break;
                 case TRIANGLE:
                     if (!(shapePanel instanceof TrianglePanel)) changeShapePanel(new TrianglePanel());
+                    break;
+                case OVAL:
+                    if (!(shapePanel instanceof OvalPanel)) changeShapePanel(new OvalPanel());
                     break;
                 default:
                     System.out.println("Not yet supported");
@@ -53,6 +59,7 @@ public class DrawingPanel extends JPanel {
 
     /**
      * Changes the currently drawn shapePanel
+     *
      * @param shape the new {@link AbstractShapePanel} to draw
      */
     private void changeShapePanel(AbstractShapePanel shape) {
