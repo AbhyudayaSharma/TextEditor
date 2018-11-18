@@ -55,7 +55,7 @@ class FontSelector extends JPanel {
         previewPanel.add(previewArea, new GridBagConstraints(0, 0, 1, 1, 0,
                 0, GridBagConstraints.CENTER, 0, new Insets(0, 0, 0, 0), 0, 0));
 
-        previewPanel.setPreferredSize(new Dimension(500, 150));
+        previewPanel.setPreferredSize(new Dimension(500, 175));
 
         var gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -97,7 +97,7 @@ class FontSelector extends JPanel {
         var selectedFont = getSelectedFont();
         if (selectedFont != null) {
             previewArea.setFont(selectedFont);
-            fontAttributeList.setFont(selectedFont.deriveFont(12f));
+            fontAttributeList.setFont(selectedFont.deriveFont(Font.PLAIN, 12f));
         }
     }
 

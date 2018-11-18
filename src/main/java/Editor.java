@@ -125,26 +125,10 @@ class Editor extends JPanel {
         }
     }
 
-    /**
-     * Toggles the BOLD attribute on the selected text
-     */
-    void toggleBoldOnSelection() {
-        toggleAttributeOnSelection("bold", StyleConstants::setBold, this::isSelectionBold);
-    }
-
-    /**
-     * Toggles ITALIC on selected text
-     */
-    void toggleItalicsOnSelection() {
-        toggleAttributeOnSelection("italic", StyleConstants::setItalic, this::isSelectionItalic);
-    }
-
-    /**
-     * Toggles the UNDERLINE attribute on the selected text.
-     */
-    void toggleUnderlineOnSelection() {
-        toggleAttributeOnSelection("underline", StyleConstants::setUnderline, this::isSelectionUnderline);
-    }
+    // Strings used as attribute names
+    private static final String BOLD = "bold";
+    private static final String ITALIC = "italic";
+    private static final String UNDERLINE = "underline";
 
     /**
      * Checks whether each element of the selection has the property applied.
@@ -455,15 +439,46 @@ class Editor extends JPanel {
         return output == JOptionPane.YES_OPTION;
     }
 
+    private static final String FONT = "font";
+
+    /**
+     * Toggles the BOLD attribute on the selected text
+     */
+    void toggleBoldOnSelection() {
+        toggleAttributeOnSelection(BOLD, StyleConstants::setBold, this::isSelectionBold);
+    }
+
+    /**
+     * Toggles ITALIC on selected text
+     */
+    void toggleItalicsOnSelection() {
+        toggleAttributeOnSelection(ITALIC, StyleConstants::setItalic, this::isSelectionItalic);
+    }
+
+    /**
+     * Toggles the UNDERLINE attribute on the selected text.
+     */
+    void toggleUnderlineOnSelection() {
+        toggleAttributeOnSelection(UNDERLINE, StyleConstants::setUnderline, this::isSelectionUnderline);
+    }
+
     /**
      * Sets the font on the selected text in the editor.
      *
      * @param font the font to be set to the selected text.
      */
     void setSelectionFont(final Font font) {
-        var style = textPane.addStyle("font", null);
+        var style = textPane.addStyle(FONT, null);
         StyleConstants.setFontFamily(style, font.getFamily());
         StyleConstants.setFontSize(style, font.getSize());
+        addAttribute(style);
+
+        style = textPane.addStyle(BOLD, null);
+        StyleConstants.setBold(style, font.isBold());
+        addAttribute(style);
+
+        style = textPane.addStyle(ITALIC, null);
+        StyleConstants.setItalic(style, font.isItalic());
         addAttribute(style);
     }
 }
