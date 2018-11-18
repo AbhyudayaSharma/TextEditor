@@ -10,6 +10,10 @@ import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * A {@link JTextPane} that uses a {@link javax.swing.text.StyledDocument} to store formatted text.
+ * Used in {@link Editor} as the base for writing text. Uses the StylizedClipboard for clipboard functions.
+ */
 class StylizedTextPane extends JTextPane {
     private final StylizedClipboard clipboard = StylizedClipboard.getClipboard();
 
@@ -20,16 +24,25 @@ class StylizedTextPane extends JTextPane {
         getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.CTRL_DOWN_MASK), "Nothing");
     }
 
+    /**
+     * Cut the contents into the clipboard
+     */
     @Override
     public void cut() {
-        clipboard.setContents(getSelectionAsList(), true);
+        clipboard.setContents(getSelectionAsList(true));
     }
 
+    /**
+     * Copy the contents into the clipboard
+     */
     @Override
     public void copy() {
-        clipboard.setContents(getSelectionAsList(), false);
+        clipboard.setContents(getSelectionAsList(false));
     }
 
+    /**
+     * Paste the contents of the clipboard into {@link StylizedTextPane}
+     */
     @Override
     public void paste() {
         var document = getStyledDocument();
@@ -63,7 +76,14 @@ class StylizedTextPane extends JTextPane {
         }
     }
 
-    private ArrayList<StylizedClipboard.StylizedCharacter> getSelectionAsList() {
+    /**
+     * Get the contents of the current selection characters with their respective
+     * attributes in an {@link ArrayList}.
+     *
+     * @param deleteSelection delete the current selection if true, do not change the selection otherwise.
+     * @return array list containing the characters and their attributes, indexed relative to selection start.
+     */
+    private ArrayList<StylizedClipboard.StylizedCharacter> getSelectionAsList(boolean deleteSelection) {
         var selectionStart = getSelectionStart();
         var selectionEnd = getSelectionEnd();
         var document = getStyledDocument();
@@ -74,9 +94,10 @@ class StylizedTextPane extends JTextPane {
                 AttributeSet set = document.getCharacterElement(i).getAttributes();
                 list.add(new StylizedClipboard.StylizedCharacter(c, set));
             }
-            document.remove(selectionStart, selectionEnd - selectionStart);
-        } catch (BadLocationException e) {
-            e.printStackTrace();
+            if (deleteSelection) {
+                document.remove(selectionStart, selectionEnd - selectionStart);
+            }
+        } catch (BadLocationException ignore) {
         }
         return list;
     }
