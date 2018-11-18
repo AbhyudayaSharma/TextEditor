@@ -86,8 +86,8 @@ class Main {
             JCheckBoxMenuItem boldButton = new JCheckBoxMenuItem("Bold");
             JCheckBoxMenuItem italicButton = new JCheckBoxMenuItem("Italic");
             JCheckBoxMenuItem underlineButton = new JCheckBoxMenuItem("Underline");
-            JMenuItem upperCaseButton = new JMenuItem("Upper Case");
-            JMenuItem lowerCaseButton = new JMenuItem("Lower Case");
+            JMenuItem upperCaseButton = new JMenuItem("To Upper Case");
+            JMenuItem lowerCaseButton = new JMenuItem("To Lower Case");
             JMenuItem fontButton = new JMenuItem("Font...");
 
             cutButton.setAccelerator(KeyStroke.getKeyStroke('X', InputEvent.CTRL_DOWN_MASK));

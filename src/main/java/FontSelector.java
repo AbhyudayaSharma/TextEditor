@@ -1,16 +1,20 @@
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * A Panel from which a user can select a font from all the Fonts installed in his/her computer.
+ */
 class FontSelector extends JPanel {
-    private JList<String> fontNameList;
-    private JList<Integer> fontSizeList;
-    private JList<String> fontAttributeList;
-    private JTextArea previewArea = new JTextArea("AaBbYyZz");
+    private final JList<String> fontNameList;
+    private final JList<Integer> fontSizeList;
+    private final JList<String> fontAttributeList;
+    private final JTextArea previewArea = new JTextArea("AaBbYyZz");
 
     FontSelector() {
         super();
         setLayout(new GridBagLayout());
 
+        // get all usable font names
         var fontNames = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
         fontNameList = new JList<>(fontNames);
         fontSizeList = new JList<>(new Integer[]{
@@ -18,11 +22,12 @@ class FontSelector extends JPanel {
         });
         fontAttributeList = new JList<>(new String[]{
                 "Regular",
-                "<html><i>Italic</i></html>",
+                "<html><i>Italic</i></html>", // swing supports basic HTML
                 "<html><b>Bold</b></html>",
                 "<html><b><i>Bold Italic</i></b></html>"
         });
 
+        // Can only select one font at a time
         fontNameList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         fontAttributeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         fontSizeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -31,6 +36,7 @@ class FontSelector extends JPanel {
         fontSizeList.addListSelectionListener(e -> updatePreviewText());
         fontAttributeList.addListSelectionListener(e -> updatePreviewText());
 
+        // Make everything scrollable
         var scrollableFontNames = new JScrollPane(fontNameList);
         var scrollableFontSizes = new JScrollPane(fontSizeList);
         var scrollableFontAttributes = new JScrollPane(fontAttributeList);
@@ -38,7 +44,7 @@ class FontSelector extends JPanel {
         scrollableFontNames.setPreferredSize(new Dimension(200, 150));
         scrollableFontAttributes.setPreferredSize(new Dimension(175, 150));
 
-        scrollableFontAttributes.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollableFontAttributes.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS); // consistency
 
         fontNameList.setSelectedValue(Editor.DEFAULT_FONT.getFamily(), true);
         fontSizeList.setSelectedValue(Editor.DEFAULT_FONT.getSize(), true);
@@ -47,14 +53,13 @@ class FontSelector extends JPanel {
         previewArea.setFont(Editor.DEFAULT_FONT);
         previewArea.setEditable(false);
         previewArea.setBackground(getBackground());
-        previewArea.setHighlighter(null);
+        previewArea.setHighlighter(null); // make the text un-selectable
 
         var previewPanel = new JPanel();
         previewPanel.setBorder(BorderFactory.createEtchedBorder());
         previewPanel.setLayout(new GridBagLayout());
         previewPanel.add(previewArea, new GridBagConstraints(0, 0, 1, 1, 0,
                 0, GridBagConstraints.CENTER, 0, new Insets(0, 0, 0, 0), 0, 0));
-
         previewPanel.setPreferredSize(new Dimension(500, 175));
 
         var gbc = new GridBagConstraints();
@@ -93,6 +98,9 @@ class FontSelector extends JPanel {
         add(previewPanel, gbc);
     }
 
+    /**
+     * Updates the preview text and the font of the font attribute selector
+     */
     private void updatePreviewText() {
         var selectedFont = getSelectedFont();
         if (selectedFont != null) {
@@ -101,11 +109,18 @@ class FontSelector extends JPanel {
         }
     }
 
+    /**
+     * Returns the font selected by the font selector.
+     *
+     * @return the selected font
+     */
     Font getSelectedFont() {
         var fontName = fontNameList.getSelectedValue();
         var fontSize = fontSizeList.getSelectedValue();
         var fontStyle = fontAttributeList.getSelectedIndex();
         int style;
+
+        // Index from the array given to fontAttributeList
         switch (fontStyle) {
             case 1:
                 style = Font.ITALIC;
