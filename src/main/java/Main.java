@@ -231,7 +231,7 @@ class Main {
             frame.add(statusBar, gbc);
 
             frame.setMinimumSize(new Dimension(300, 200));
-            frame.setPreferredSize(new Dimension(500, 500));
+            frame.setPreferredSize(new Dimension(1024, 768));
             frame.pack();
             frame.setVisible(true);
         });
