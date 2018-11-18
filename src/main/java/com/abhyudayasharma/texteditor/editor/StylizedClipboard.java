@@ -1,3 +1,5 @@
+package com.abhyudayasharma.texteditor.editor;
+
 import javax.swing.text.AttributeSet;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;

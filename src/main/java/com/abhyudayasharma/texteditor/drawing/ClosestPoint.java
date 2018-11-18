@@ -1,4 +1,4 @@
-package drawing;
+package com.abhyudayasharma.texteditor.drawing;
 
 /**
  * Used to keep track of the point closest to the selected point of a figure

@@ -1,16 +1,18 @@
+package com.abhyudayasharma.texteditor.editor;
+
 import javax.swing.*;
 import java.awt.*;
 
 /**
  * A Panel from which a user can select a font from all the Fonts installed in his/her computer.
  */
-class FontSelector extends JPanel {
+public class FontSelector extends JPanel {
     private final JList<String> fontNameList;
     private final JList<Integer> fontSizeList;
     private final JList<String> fontAttributeList;
     private final JTextArea previewArea = new JTextArea("AaBbYyZz");
 
-    FontSelector() {
+    public FontSelector() {
         super();
         setLayout(new GridBagLayout());
 
@@ -114,7 +116,7 @@ class FontSelector extends JPanel {
      *
      * @return the selected font
      */
-    Font getSelectedFont() {
+    public Font getSelectedFont() {
         var fontName = fontNameList.getSelectedValue();
         var fontSize = fontSizeList.getSelectedValue();
         var fontStyle = fontAttributeList.getSelectedIndex();

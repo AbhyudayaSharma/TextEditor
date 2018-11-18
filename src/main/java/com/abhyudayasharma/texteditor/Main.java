@@ -1,4 +1,8 @@
-import drawing.DrawingPanel;
+package com.abhyudayasharma.texteditor;
+
+import com.abhyudayasharma.texteditor.drawing.DrawingPanel;
+import com.abhyudayasharma.texteditor.editor.Editor;
+import com.abhyudayasharma.texteditor.editor.FontSelector;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -9,7 +13,15 @@ import java.awt.event.InputEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-class Main {
+/**
+ * The Main class for the Project. Contains the <code>main()</code> method.
+ * Runs an {@link Editor} in a {@link JFrame} with some added UI.
+ */
+public class Main {
+    /**
+     * The <code>main</code> method
+     * @param args the command line arguments
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             // Native look and feel

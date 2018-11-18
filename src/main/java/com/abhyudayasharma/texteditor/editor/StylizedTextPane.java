@@ -1,3 +1,5 @@
+package com.abhyudayasharma.texteditor.editor;
+
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.text.AttributeSet;

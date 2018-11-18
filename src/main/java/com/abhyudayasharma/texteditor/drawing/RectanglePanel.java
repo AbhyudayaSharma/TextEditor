@@ -1,4 +1,4 @@
-package drawing;
+package com.abhyudayasharma.texteditor.drawing;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;

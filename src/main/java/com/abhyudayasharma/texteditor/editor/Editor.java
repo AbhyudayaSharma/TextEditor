@@ -1,3 +1,5 @@
+package com.abhyudayasharma.texteditor.editor;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.*;
@@ -15,7 +17,7 @@ import java.util.function.Function;
  *
  * @author Abhyudaya Sharma
  */
-class Editor extends JPanel {
+public class Editor extends JPanel {
     static final Font DEFAULT_FONT = new Font("Arial", Font.PLAIN, 14);
     private static final String FILE_EXTENSION = ".std";
     private static final String WORD_DELIMITERS = " ,.!?/\\()[]{};:\t\r\n";
@@ -31,7 +33,7 @@ class Editor extends JPanel {
      * Creates a new {@link Editor} with a scrollable {@link StylizedTextPane}
      * which has no soft-wraps.
      */
-    Editor() {
+    public Editor() {
         super();
         textPane = new StylizedTextPane();
 
@@ -54,7 +56,7 @@ class Editor extends JPanel {
      *
      * @return the total number of words
      */
-    int wordCount() {
+    public int wordCount() {
         return new StringTokenizer(textPane.getText(), WORD_DELIMITERS).countTokens();
     }
 
@@ -63,7 +65,7 @@ class Editor extends JPanel {
      *
      * @return the number of words in the current selection
      */
-    int selectedWordCount() {
+    public int selectedWordCount() {
         return textPane.getSelectionStart() == textPane.getSelectionEnd() ? 0 :
                 new StringTokenizer(textPane.getSelectedText(), WORD_DELIMITERS).countTokens();
     }
@@ -73,7 +75,7 @@ class Editor extends JPanel {
      *
      * @return the total number of characters
      */
-    int charCount() {
+    public int charCount() {
         return textPane.getText().length();
     }
 
@@ -82,7 +84,7 @@ class Editor extends JPanel {
      *
      * @return the number of characters in the selection
      */
-    int selectedCharCount() {
+    public int selectedCharCount() {
         var selectionStart = textPane.getSelectionStart();
         var selectionEnd = textPane.getSelectionEnd();
 
@@ -92,7 +94,7 @@ class Editor extends JPanel {
     /**
      * Opens up a dialog to select where to store the file.
      */
-    void saveAs() {
+    public void saveAs() {
         var fileChooser = new JFileChooser();
         fileChooser.setFileFilter(new FileNameExtensionFilter("Styled documents",
                 Editor.FILE_EXTENSION.substring(1))); // FileNameExtensionFilter doesn't want a '.'
@@ -135,7 +137,7 @@ class Editor extends JPanel {
     /**
      * Save the current text stored in the textPane as a {@link StyledDocument}.
      */
-    void save() {
+    public void save() {
         if (savedFilePath != null) {
             saveAs(savedFilePath, false);
         } else {
@@ -146,7 +148,7 @@ class Editor extends JPanel {
     /**
      * Opens up a dialog to select the {@link StyledDocument} file to be opened
      */
-    void open() {
+    public void open() {
         var fileChooser = new JFileChooser();
         fileChooser.setFileFilter(new FileNameExtensionFilter("Styled documents",
                 Editor.FILE_EXTENSION.substring(1))); // FileNameExtensionFilter doesn't want a '.'
@@ -215,7 +217,7 @@ class Editor extends JPanel {
      *
      * @return true if every character in the selection is bold. Otherwise false.
      */
-    boolean isSelectionBold() {
+    public boolean isSelectionBold() {
         return selectionHasAttribute(StyleConstants::isBold);
     }
 
@@ -224,7 +226,7 @@ class Editor extends JPanel {
      *
      * @return true if every character in the selection is italic. Otherwise false.
      */
-    boolean isSelectionItalic() {
+    public boolean isSelectionItalic() {
         return selectionHasAttribute(StyleConstants::isItalic);
     }
 
@@ -233,7 +235,7 @@ class Editor extends JPanel {
      *
      * @return true if every character in the selection is underline. Otherwise false.
      */
-    boolean isSelectionUnderline() {
+    public boolean isSelectionUnderline() {
         return selectionHasAttribute(StyleConstants::isUnderline);
     }
 
@@ -274,21 +276,21 @@ class Editor extends JPanel {
     /**
      * Wrapper for cut
      */
-    void cut() {
+    public void cut() {
         textPane.cut();
     }
 
     /**
      * Wrapper for copy
      */
-    void copy() {
+    public void copy() {
         textPane.copy();
     }
 
     /**
      * Wrapper for paste
      */
-    void paste() {
+    public void paste() {
         textPane.paste();
     }
 
@@ -297,14 +299,14 @@ class Editor extends JPanel {
      *
      * @return null if no file has been saved yet, the path of the file written otherwise
      */
-    String getSavedFilePath() {
+    public String getSavedFilePath() {
         return savedFilePath;
     }
 
     /**
      * Finds text in the textPane with a dialog for input
      */
-    void findText() {
+    public void findText() {
         var panel = new JPanel(new GridLayout(2, 2));
         var textField = new JTextField(10);
         var checkBox = new JCheckBox("Match Case", true);
@@ -378,7 +380,7 @@ class Editor extends JPanel {
     /**
      * Converts the selected text to Uppercase.
      */
-    void selectionToUpperCase() {
+    public void selectionToUpperCase() {
         var selectionStart = textPane.getSelectionStart();
         var selectionEnd = textPane.getSelectionEnd();
         var substring = textPane.getText().substring(selectionStart, selectionEnd);
@@ -389,7 +391,7 @@ class Editor extends JPanel {
     /**
      * Converts the selected text to Lowercase.
      */
-    void selectionToLowerCase() {
+    public void selectionToLowerCase() {
         var selectionStart = textPane.getSelectionStart();
         var selectionEnd = textPane.getSelectionEnd();
         var substring = textPane.getText().substring(selectionStart, selectionEnd);
@@ -463,7 +465,7 @@ class Editor extends JPanel {
     /**
      * Replaces the text in the textPane with a dialog for input
      */
-    void replaceText() {
+    public void replaceText() {
         var fromField = new JTextField(15);
         var toField = new JTextField(15);
         var replaceAllCheck = new JCheckBox("Replace All", false);
@@ -498,7 +500,7 @@ class Editor extends JPanel {
      *
      * @return true if ready to quit, false otherwise.
      */
-    boolean confirmClose() {
+    public boolean confirmClose() {
         var output = JOptionPane.showConfirmDialog(getTopLevelAncestor(),
                 "Do you want to exit? You may have unsaved changes.",
                 "Confirm exit", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -508,21 +510,21 @@ class Editor extends JPanel {
     /**
      * Toggles the BOLD attribute on the selected text
      */
-    void toggleBoldOnSelection() {
+    public void toggleBoldOnSelection() {
         toggleAttributeOnSelection(BOLD, StyleConstants::setBold, this::isSelectionBold);
     }
 
     /**
      * Toggles ITALIC on selected text
      */
-    void toggleItalicsOnSelection() {
+    public void toggleItalicsOnSelection() {
         toggleAttributeOnSelection(ITALIC, StyleConstants::setItalic, this::isSelectionItalic);
     }
 
     /**
      * Toggles the UNDERLINE attribute on the selected text.
      */
-    void toggleUnderlineOnSelection() {
+    public void toggleUnderlineOnSelection() {
         toggleAttributeOnSelection(UNDERLINE, StyleConstants::setUnderline, this::isSelectionUnderline);
     }
 
@@ -531,7 +533,7 @@ class Editor extends JPanel {
      *
      * @param font the font to be set to the selected text.
      */
-    void setSelectionFont(final Font font) {
+    public void setSelectionFont(final Font font) {
         var style = textPane.addStyle(FONT, null);
         StyleConstants.setFontFamily(style, font.getFamily());
         StyleConstants.setFontSize(style, font.getSize());
