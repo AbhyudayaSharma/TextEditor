@@ -59,8 +59,8 @@ class Main {
             var boldButton = new JCheckBoxMenuItem("Bold");
             var italicButton = new JCheckBoxMenuItem("Italic");
             var underlineButton = new JCheckBoxMenuItem("Underline");
-            var upperCaseButton = new JMenuItem("Upper Case");
-            var lowerCaseButton = new JMenuItem("Lower Case");
+            var upperCaseButton = new JMenuItem("To Upper Case");
+            var lowerCaseButton = new JMenuItem("To Lower Case");
             var fontButton = new JMenuItem("Font...");
 
             cutButton.setAccelerator(KeyStroke.getKeyStroke('X', InputEvent.CTRL_DOWN_MASK));
@@ -212,7 +212,7 @@ class Main {
             frame.add(statusBar, gbc);
 
             frame.setMinimumSize(new Dimension(300, 200));
-            frame.setPreferredSize(new Dimension(500, 500));
+            frame.setPreferredSize(new Dimension(1024, 768));
             frame.pack();
             frame.setVisible(true);
         });
