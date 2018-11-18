@@ -16,13 +16,16 @@ import java.util.function.Function;
  * @author Abhyudaya Sharma
  */
 class Editor extends JPanel {
+    static final Font DEFAULT_FONT = new Font("Arial", Font.PLAIN, 14);
     private static final String FILE_EXTENSION = ".std";
     private static final String WORD_DELIMITERS = " ,.!?/\\()[]{};:\t\r\n";
+    // Strings used as attribute names
+    private static final String BOLD = "bold";
+    private static final String ITALIC = "italic";
+    private static final String UNDERLINE = "underline";
+    private static final String FONT = "font";
     private final StylizedTextPane textPane;
-
     private String savedFilePath = null;
-
-    static final Font DEFAULT_FONT = new Font("Arial", Font.PLAIN, 14);
 
     /**
      * Creates a new {@link Editor} with a scrollable {@link StylizedTextPane}
@@ -184,11 +187,6 @@ class Editor extends JPanel {
         }
     }
 
-    // Strings used as attribute names
-    private static final String BOLD = "bold";
-    private static final String ITALIC = "italic";
-    private static final String UNDERLINE = "underline";
-
     /**
      * Checks whether each element of the selection has the property applied.
      *
@@ -292,6 +290,15 @@ class Editor extends JPanel {
      */
     void paste() {
         textPane.paste();
+    }
+
+    /**
+     * Returns the path to the file saved.
+     *
+     * @return null if no file has been saved yet, the path of the file written otherwise
+     */
+    String getSavedFilePath() {
+        return savedFilePath;
     }
 
     /**
@@ -497,8 +504,6 @@ class Editor extends JPanel {
                 "Confirm exit", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         return output == JOptionPane.YES_OPTION;
     }
-
-    private static final String FONT = "font";
 
     /**
      * Toggles the BOLD attribute on the selected text
