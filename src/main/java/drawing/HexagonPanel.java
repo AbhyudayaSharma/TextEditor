@@ -7,6 +7,10 @@ import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * A panel which draws a hexagon. The size and position of the triangle can be
+ * modified by using the mouse.
+ */
 class HexagonPanel extends AbstractShapePanel {
     private final Polygon hexagon = new Polygon(new int[]{125, 175, 225, 275, 225, 175},
             new int[]{200, 150, 150, 200, 250, 250, 200}, 6);
