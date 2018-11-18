@@ -329,7 +329,7 @@ class Editor extends JPanel {
      *
      * @param str           the string to be found
      * @param caseSensitive find text ignoring case if false
-     * @param lastIndex     true => last index; false => first index
+     * @param lastIndex     finds last index if true, first index otherwise
      * @return true if the text was found, false otherwise.
      */
     private boolean findText(String str, boolean caseSensitive, boolean lastIndex) {
