@@ -53,6 +53,7 @@ public class Main {
             var saveButton = new JMenuItem("Save");
             var saveAsButton = new JMenuItem("Save As...");
             var openButton = new JMenuItem("Open...");
+            var aboutButton = new JMenuItem("About...");
 
             saveButton.setAccelerator(KeyStroke.getKeyStroke('S', InputEvent.CTRL_DOWN_MASK));
             saveButton.addActionListener(e -> editor.save());
@@ -61,6 +62,9 @@ public class Main {
 
             openButton.setAccelerator(KeyStroke.getKeyStroke('O', InputEvent.CTRL_DOWN_MASK));
             openButton.addActionListener(e -> editor.open());
+
+            aboutButton.addActionListener(e -> JOptionPane.showMessageDialog(frame,
+                    "A simple text editor made by Abhyudaya Sharma and Ambreesh Parthasarthy."));
 
             var cutButton = new JMenuItem("Cut");
             var copyButton = new JMenuItem("Copy");
@@ -91,6 +95,8 @@ public class Main {
             fileMenu.add(new JSeparator());
             fileMenu.add(saveButton);
             fileMenu.add(saveAsButton);
+            fileMenu.add(new JSeparator());
+            fileMenu.add(aboutButton);
 
             editMenu.add(cutButton);
             editMenu.add(copyButton);
