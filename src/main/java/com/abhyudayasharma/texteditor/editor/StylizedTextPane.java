@@ -1,7 +1,6 @@
 package com.abhyudayasharma.texteditor.editor;
 
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import java.awt.*;
@@ -21,7 +20,7 @@ class StylizedTextPane extends JTextPane {
 
     StylizedTextPane() {
         super();
-        setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED, Color.BLACK, Color.GRAY));
+        setBorder(BorderFactory.createEtchedBorder());
         // override the default CTRL-H
         getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_H, InputEvent.CTRL_DOWN_MASK), "Nothing");
     }

@@ -20,6 +20,7 @@ import java.awt.event.WindowEvent;
 public class Main {
     /**
      * The <code>main</code> method
+     *
      * @param args the command line arguments
      */
     public static void main(String[] args) {

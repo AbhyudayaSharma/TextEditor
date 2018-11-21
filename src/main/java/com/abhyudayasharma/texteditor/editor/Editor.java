@@ -21,6 +21,7 @@ public class Editor extends JPanel {
     static final Font DEFAULT_FONT = new Font("Arial", Font.PLAIN, 14);
     private static final String FILE_EXTENSION = ".std";
     private static final String WORD_DELIMITERS = " ,.!?/\\()[]{};:\t\r\n";
+
     // Strings used as attribute names
     private static final String BOLD = "bold";
     private static final String ITALIC = "italic";
