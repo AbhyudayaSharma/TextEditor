@@ -98,9 +98,9 @@ public class Editor extends JPanel {
         var fileChooser = new JFileChooser();
         fileChooser.setFileFilter(new FileNameExtensionFilter("Styled documents",
                 Editor.FILE_EXTENSION.substring(1))); // FileNameExtensionFilter doesn't want a '.'
-        fileChooser.showSaveDialog(getTopLevelAncestor());
-        var file = fileChooser.getSelectedFile();
-        if (file != null) {
+        if (fileChooser.showSaveDialog(getTopLevelAncestor()) == JFileChooser.APPROVE_OPTION) {
+            var file = fileChooser.getSelectedFile();
+            if (file == null) return;
             // The file should have the extension applied if it doesn't already
             var path = file.getAbsolutePath();
             if (!path.endsWith(FILE_EXTENSION)) path += FILE_EXTENSION;
@@ -152,10 +152,10 @@ public class Editor extends JPanel {
         var fileChooser = new JFileChooser();
         fileChooser.setFileFilter(new FileNameExtensionFilter("Styled documents",
                 Editor.FILE_EXTENSION.substring(1))); // FileNameExtensionFilter doesn't want a '.'
-        fileChooser.showOpenDialog(getTopLevelAncestor());
-        var file = fileChooser.getSelectedFile();
-        if (file != null) {
+        if (fileChooser.showOpenDialog(getTopLevelAncestor()) == JFileChooser.APPROVE_OPTION) {
             try {
+                var file = fileChooser.getSelectedFile();
+                if (file == null) return;
                 open(file);
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(getTopLevelAncestor(), ex.getMessage(), "Error",
