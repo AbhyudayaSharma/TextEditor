@@ -103,4 +103,24 @@ class StylizedTextPane extends JTextPane {
         }
         return list;
     }
+
+    /**
+     * Override adding '\r\n' on Windows to have a consistent text length and selectionStart and selectionEnd indices.
+     *
+     * @return the entire text contained in the {@link StylizedTextPane}
+     */
+    @Override
+    public String getText() {
+        return super.getText().replaceAll("\r\n", "\n");
+    }
+
+    /**
+     * Have consistent LF line breaks on all platforms
+     *
+     * @return the selected text
+     */
+    @Override
+    public String getSelectedText() {
+        return super.getSelectedText().replaceAll("\r\n", "\n");
+    }
 }

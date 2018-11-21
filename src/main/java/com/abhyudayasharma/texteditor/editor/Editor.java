@@ -395,8 +395,8 @@ public class Editor extends JPanel {
         var selectionStart = textPane.getSelectionStart();
         var selectionEnd = textPane.getSelectionEnd();
         var substring = textPane.getText().substring(selectionStart, selectionEnd);
-        var upperCaseSubstring = substring.toLowerCase(Locale.US);
-        replaceText(substring, upperCaseSubstring, true, selectionStart);
+        var lowerCaseSubstring = substring.toLowerCase(Locale.US);
+        replaceText(substring, lowerCaseSubstring, true, selectionStart);
     }
 
     /**
