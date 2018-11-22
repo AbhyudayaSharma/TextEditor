@@ -102,13 +102,13 @@ class TrianglePanel extends AbstractShapePanel {
         });
     }
 
+    /**
+     * Draw the triangle as a polygon
+     *
+     * @param g the graphics
+     */
     @Override
     protected void draw(Graphics g) {
-        g.drawString(polygonMovementInstructions, 10, 20);
-        g.fillPolygon(triangle);
-        var box = triangle.getBounds();
-        g.setColor(Color.RED);
-        g.fillOval((int) box.getCenterX(), (int) box.getCenterY(), 5, 5);
-        g.setColor(Color.BLACK);
+        drawPolygon(g, triangle);
     }
 }

@@ -17,7 +17,7 @@ import java.awt.event.WindowEvent;
  * The Main class for the Project. Contains the <code>main()</code> method.
  * Runs an {@link Editor} in a {@link JFrame} with some added UI.
  */
-public class Main {
+class Main {
     /**
      * The <code>main</code> method
      *

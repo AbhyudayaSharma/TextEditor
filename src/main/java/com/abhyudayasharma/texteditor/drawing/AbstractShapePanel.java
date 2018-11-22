@@ -21,7 +21,7 @@ abstract class AbstractShapePanel extends JPanel {
     /**
      * Generalized instructions for moving any polygon inside the panel
      */
-    final String polygonMovementInstructions = "Drag the red circle to move the figure. " +
+    final static String polygonMovementInstructions = "Drag the red circle to move the figure. " +
             "Drag any vertex to change its position";
 
     /**
@@ -30,6 +30,21 @@ abstract class AbstractShapePanel extends JPanel {
      * @param g the graphics
      */
     protected abstract void draw(Graphics g);
+
+    /**
+     * Utility function to draw a polygon on the panel
+     *
+     * @param g       the graphics
+     * @param polygon the polygon to be drawn
+     */
+    void drawPolygon(Graphics g, Polygon polygon) {
+        g.drawString(polygonMovementInstructions, 10, 20);
+        g.fillPolygon(polygon);
+        var box = polygon.getBounds();
+        g.setColor(Color.RED);
+        g.fillOval((int) box.getCenterX(), (int) box.getCenterY(), 5, 5);
+        g.setColor(Color.BLACK);
+    }
 
     @Override
     final protected void paintComponent(Graphics g) {
