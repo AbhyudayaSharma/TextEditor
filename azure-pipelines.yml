@@ -3,11 +3,19 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
+strategy:
+  matrix:
+    windows:
+      imageName: 'vs2017-win2016'
+    linux:
+      imageName: 'Ubuntu-16.04'
+
+
 trigger:
 - master
 
 pool:
-  vmImage: 'Ubuntu-16.04'
+  vmImage: $(imageName)
 
 steps:
 - task: Maven@3
